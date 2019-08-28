@@ -24,4 +24,37 @@
   
   .container {
     padding: 2px 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @media(max-width: 500px){
+    .card{
+      width: 80%;
+    }
+  }
+
+  @media(max-width: 700px){
+    .card{
+      width: 75%;
+    }
+  }
+
+  @media(max-width: 800px){
+    .card{
+      width: 70%;
+    }
+  }
+
+  @media(max-width: 1000px){
+    .card{
+      width: 60%;
+    }
+  }
+
+  @media(max-width: 1300px){
+    .card{
+      width: 50%;
+    }
   }
