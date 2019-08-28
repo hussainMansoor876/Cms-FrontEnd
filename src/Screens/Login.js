@@ -2,21 +2,37 @@ import React from 'react';
 import './Login.css'
 import 'antd/dist/antd.css';
 import { Form, Icon, Input, Button, Checkbox, notification } from 'antd';
+import { Link } from 'react-router-dom'
+
 
 
 class Login extends React.Component {
   constructor() {
     super();
     this.state = {
-      login: true
+      email: '',
+      password: ''
     }
   }
+
+  openNotification = () => {
+    notification.open({
+      message: 'Notification Title',
+      description:
+        'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+      icon: <Icon type="smile" style={{ color: '#108ee9' }} />,
+    });
+  };
 
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+        this.setState({ email: values.email })
+      }
+      else{
+        this.openNotification()
       }
     });
   };
@@ -31,12 +47,12 @@ class Login extends React.Component {
             <Form onSubmit={this.handleSubmit} className="login-form">
               <h1 style={{ textAlign: 'center' }}>Login</h1>
               <Form.Item>
-                {getFieldDecorator('username', {
-                  rules: [{ required: true, message: 'Please input your username!' }],
+                {getFieldDecorator('email', {
+                  rules: [{ required: true, message: 'Please input your Email!' }],
                 })(
                   <Input
-                    prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                    placeholder="Username"
+                    prefix={<Icon type="email" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    placeholder="Email"
                   />,
                 )}
               </Form.Item>
@@ -59,10 +75,10 @@ class Login extends React.Component {
                 <a className="login-form-forgot" href="">
                   Forgot password
           </a>
-                <Button htmlType="submit" className="login-form-button" style={{ backgroundColor: '#37A000', color: 'white', fontWeight: 'bold', fontSize: 14, height: 40 }} onClick={openNotification}>
+                <Button htmlType="submit" className="login-form-button" style={{ backgroundColor: '#37A000', color: 'white', fontWeight: 'bold', fontSize: 14, height: 40 }}>
                   Log in
           </Button>
-                Or <a href="" onKeyPress={() => alert("Hello")}>register now!</a>
+                Or <Link to="/register">Register Now!</Link>
               </Form.Item>
             </Form>
           </div>
@@ -72,14 +88,6 @@ class Login extends React.Component {
   }
 }
 
-const openNotification = () => {
-  notification.open({
-    message: 'Notification Title',
-    description:
-      'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
-    icon: <Icon type="smile" style={{ color: '#108ee9' }} />,
-  });
-};
 
 const LoginComp = Form.create({ name: 'normal_login' })(Login);
 

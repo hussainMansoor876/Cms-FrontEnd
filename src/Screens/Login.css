@@ -21,6 +21,11 @@
   .card:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
   }
+
+  .sign-up{
+    width: 300px;
+    /* border: 10px solid black; */
+  }
   
   .container {
     padding: 2px 16px;
@@ -29,21 +34,9 @@
     align-items: center;
   }
 
-  @media(max-width: 500px){
+  @media(max-width: 1300px){
     .card{
-      width: 80%;
-    }
-  }
-
-  @media(max-width: 700px){
-    .card{
-      width: 75%;
-    }
-  }
-
-  @media(max-width: 800px){
-    .card{
-      width: 70%;
+      width: 50%;
     }
   }
 
@@ -53,8 +46,44 @@
     }
   }
 
-  @media(max-width: 1300px){
+  
+  @media(max-width: 800px){
     .card{
-      width: 50%;
+      width: 70%;
     }
   }
+
+
+  @media(max-width: 700px){
+    .card{
+      width: 75%;
+    }
+    .sign-up{
+      width: 200px
+    }
+  }
+
+  @media(max-width: 500px){
+    .card{
+      width: 80%;
+    }
+  }
+
+  @media(max-width: 300px){
+    .sign-up{
+      width: 150px
+    }
+  }
+
+  @media(max-width: 200px){
+    .sign-up{
+      width: 100px
+    }
+  }
+
+  
+
+  
+  
+
+  

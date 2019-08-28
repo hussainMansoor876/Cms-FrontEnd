@@ -2,9 +2,10 @@ import React from 'react';
 import './Login.css'
 import 'antd/dist/antd.css';
 import { Form, Icon, Input, Button, Checkbox, notification } from 'antd';
+import { Link } from 'react-router-dom'
 
 
-class Login extends React.Component {
+class Signup extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -12,11 +13,24 @@ class Login extends React.Component {
     }
   }
 
+  openNotification = () => {
+    notification.open({
+      message: 'Notification Title',
+      description:
+        'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+      icon: <Icon type="smile" style={{ color: '#108ee9' }} />,
+    });
+  };
+
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+        this.setState({ email: values.email, userName: values.username })
+      }
+      else{
+          this.openNotification()
       }
     });
   };
@@ -29,8 +43,8 @@ class Login extends React.Component {
         <div className="card">
           <div className="container">
             <Form onSubmit={this.handleSubmit} className="login-form">
-              <h1 style={{ textAlign: 'center' }}>Register</h1>
-              <Form.Item>
+              <h1 style={{ textAlign: 'center' }} >Register</h1>
+              <Form.Item className="sign-up">
                 {getFieldDecorator('username', {
                   rules: [{ required: true, message: 'Please input your username!' }],
                 })(
@@ -40,17 +54,18 @@ class Login extends React.Component {
                   />,
                 )}
               </Form.Item>
-              <Form.Item>
+              <Form.Item className="sign-up">
                 {getFieldDecorator('email', {
-                  rules: [{ required: true, message: 'Please input your email!' }],
+                  rules: [{ required: true, message: 'Please input your Email!' }],
                 })(
                   <Input
-                    prefix={<Icon type="email" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    type="email"
                     placeholder="Email"
                   />,
                 )}
               </Form.Item>
-              <Form.Item>
+              <Form.Item className="sign-up">
                 {getFieldDecorator('password', {
                   rules: [{ required: true, message: 'Please input your Password!' }],
                 })(
@@ -61,11 +76,11 @@ class Login extends React.Component {
                   />,
                 )}
               </Form.Item>
-              <Form.Item>
-                <Button htmlType="submit" className="login-form-button" style={{ backgroundColor: '#37A000', color: 'white', fontWeight: 'bold', fontSize: 14, height: 40 }} onClick={openNotification}>
-                  Sign Up
+              <Form.Item className="sign-up">
+                <Button htmlType="submit" className="login-form-button" style={{ backgroundColor: '#37A000', color: 'white', fontWeight: 'bold', fontSize: 14, height: 40 }}>
+                  Log in
           </Button>
-                Or <a href="">Login</a>
+                Or <Link to="/">Login Account</Link>
               </Form.Item>
             </Form>
           </div>
@@ -75,17 +90,10 @@ class Login extends React.Component {
   }
 }
 
-const openNotification = () => {
-  notification.open({
-    message: 'Notification Title',
-    description:
-      'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
-    icon: <Icon type="smile" style={{ color: '#108ee9' }} />,
-  });
-};
 
-const LoginComp = Form.create({ name: 'normal_login' })(Login);
+
+const SignupComp = Form.create({ name: 'normal_login' })(Signup);
 
 
 
-export default LoginComp;
+export default SignupComp;
