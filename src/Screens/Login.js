@@ -4,6 +4,8 @@ import 'antd/dist/antd.css';
 import { Form, Icon, Input, Button, Checkbox, notification } from 'antd';
 import { Link } from 'react-router-dom'
 
+const title = "Error"
+const desc = 'Invalid User name or Email!'
 
 
 class Login extends React.Component {
@@ -15,12 +17,11 @@ class Login extends React.Component {
     }
   }
 
-  openNotification = () => {
+  openNotification = (title, desc, icon) => {
     notification.open({
-      message: 'Notification Title',
-      description:
-        'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
-      icon: <Icon type="smile" style={{ color: '#108ee9' }} />,
+      message: title,
+      description: desc,
+      icon: <Icon type={icon} style={{ color: '#108ee9' }} />,
     });
   };
 
@@ -32,7 +33,7 @@ class Login extends React.Component {
         this.setState({ email: values.email })
       }
       else{
-        this.openNotification()
+        this.openNotification(title, desc, 'close-circle')
       }
     });
   };
