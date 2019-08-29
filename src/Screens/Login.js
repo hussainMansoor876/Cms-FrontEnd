@@ -5,15 +5,16 @@ import { Form, Icon, Input, Button, Checkbox, notification } from 'antd';
 import { Link } from 'react-router-dom'
 
 const title = "Error"
-const desc = 'Invalid User name or Email!'
+const desc = 'Please Enter Email and Password!'
 
 
 class Login extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      disable: false
     }
   }
 
@@ -29,10 +30,30 @@ class Login extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        this.setState({ disable: true })
         console.log('Received values of form: ', values);
+
+        fetch('https://cmsbackend123.herokuapp.com/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(values),
+        })
+          .then(response => response.json())
+          .then((result) => {
+            console.log(result)
+            if (result.success) {
+              this.props.history.push('/home')
+            }
+            else {
+              this.openNotification(title, result.message, 'close-circle')
+              this.setState({ disable: false })
+            }
+          })
         this.setState({ email: values.email })
       }
-      else{
+      else {
         this.openNotification(title, desc, 'close-circle')
       }
     });
@@ -52,8 +73,9 @@ class Login extends React.Component {
                   rules: [{ required: true, message: 'Please input your Email!' }],
                 })(
                   <Input
-                    prefix={<Icon type="email" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                     placeholder="Email"
+                    type="email"
                   />,
                 )}
               </Form.Item>
@@ -76,7 +98,7 @@ class Login extends React.Component {
                 <a className="login-form-forgot" href="">
                   Forgot password
           </a>
-                <Button htmlType="submit" className="login-form-button" style={{ backgroundColor: '#37A000', color: 'white', fontWeight: 'bold', fontSize: 14, height: 40 }}>
+                <Button htmlType="submit" className="login-form-button" disabled={this.state.disable} style={{ backgroundColor: '#37A000', color: 'white', fontWeight: 'bold', fontSize: 14, height: 40 }}>
                   Log in
           </Button>
                 Or <Link to="/register">Register Now!</Link>

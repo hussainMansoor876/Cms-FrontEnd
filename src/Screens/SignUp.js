@@ -4,33 +4,59 @@ import 'antd/dist/antd.css';
 import { Form, Icon, Input, Button, Checkbox, notification } from 'antd';
 import { Link } from 'react-router-dom'
 
+const title = "Error"
+const desc = 'Please Enter Correct UserName, Email and Password!'
+
+const message = "Please check your email for verification link"
+
 
 class Signup extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      login: true
+      login: true,
+      disable: false
     }
   }
 
-  openNotification = () => {
+  openNotification = (title, desc, icon) => {
     notification.open({
-      message: 'Notification Title',
-      description:
-        'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
-      icon: <Icon type="smile" style={{ color: '#108ee9' }} />,
+      message: title,
+      description: desc,
+      icon: <Icon type={icon} style={{ color: '#108ee9' }} />,
     });
   };
+
 
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        this.setState({ disable: true })
         console.log('Received values of form: ', values);
-        this.setState({ email: values.email, userName: values.username })
+        fetch('https://cmsbackend123.herokuapp.com/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(values),
+        })
+          .then(response => response.json())
+          .then((result) => {
+            console.log(result)
+            if(result.success){
+              this.openNotification('Wellcome', result.message, 'check')
+              this.props.history.push('/home')
+            }
+            else{
+              this.openNotification(title, result.message, 'close-circle')
+              this.setState({ disable: false })
+            }
+          })
+        // this.setState({ email: values.email, userName: values.user })
       }
       else{
-          this.openNotification()
+        this.openNotification(title, desc, 'close-circle')
       }
     });
   };
@@ -45,7 +71,7 @@ class Signup extends React.Component {
             <Form onSubmit={this.handleSubmit} className="login-form">
               <h1 style={{ textAlign: 'center' }} >Register</h1>
               <Form.Item className="sign-up">
-                {getFieldDecorator('username', {
+                {getFieldDecorator('name', {
                   rules: [{ required: true, message: 'Please input your username!' }],
                 })(
                   <Input
@@ -77,8 +103,8 @@ class Signup extends React.Component {
                 )}
               </Form.Item>
               <Form.Item className="sign-up">
-                <Button htmlType="submit" className="login-form-button" style={{ backgroundColor: '#37A000', color: 'white', fontWeight: 'bold', fontSize: 14, height: 40 }}>
-                  Log in
+                <Button htmlType="submit" className="login-form-button" disabled={this.state.disable} style={{ backgroundColor: '#37A000', color: 'white', fontWeight: 'bold', fontSize: 14, height: 40 }}>
+                  Sign Up
           </Button>
                 Or <Link to="/">Login Account</Link>
               </Form.Item>
