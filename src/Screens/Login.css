@@ -59,7 +59,7 @@
       width: 75%;
     }
     .sign-up{
-      width: 200px
+      width: 200px;
     }
   }
 
@@ -71,13 +71,13 @@
 
   @media(max-width: 300px){
     .sign-up{
-      width: 150px
+      width: 150px;
     }
   }
 
   @media(max-width: 200px){
     .sign-up{
-      width: 100px
+      width: 120px;
     }
   }
 

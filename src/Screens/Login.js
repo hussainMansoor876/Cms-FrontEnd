@@ -18,11 +18,11 @@ class Login extends React.Component {
     }
   }
 
-  openNotification = (title, desc, icon) => {
+  openNotification = (title, desc, icon, color='#108ee9') => {
     notification.open({
       message: title,
       description: desc,
-      icon: <Icon type={icon} style={{ color: '#108ee9' }} />,
+      icon: <Icon type={icon} style={{ color: color }} />,
     });
   };
 
@@ -47,14 +47,14 @@ class Login extends React.Component {
               this.props.history.push('/home')
             }
             else {
-              this.openNotification(title, result.message, 'close-circle')
+              this.openNotification(title, result.message, 'close-circle', 'red')
               this.setState({ disable: false })
             }
           })
         this.setState({ email: values.email })
       }
       else {
-        this.openNotification(title, desc, 'close-circle')
+        this.openNotification(title, desc, 'close-circle', 'red')
       }
     });
   };
