@@ -88,6 +88,9 @@ class Login extends React.Component {
       if (!validator.isEmail(values.email)) {
         return this.openNotification("Email", "Invalid Email", 'close-circle', 'red')
       }
+      else if(values.password.length <= 6){
+        return this.openNotification("Password", "Password must be Atleast 6 Digits", 'close-circle', 'red')
+      }
 
       this.setState({ loading: true, disable: true })
       this.props.authenticate({ email: values.email, password: values.password })
