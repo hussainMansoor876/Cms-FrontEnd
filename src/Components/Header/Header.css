@@ -1,0 +1,45 @@
+
+/* header */
+header[role=banner] {
+    background: white;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+  }
+  header[role=banner] h1 {
+    margin: 0;
+    font-weight: 300;
+    padding: 1rem;
+  }
+  header[role=banner] h1:before {
+    content: "\f248";
+    font-family: FontAwesome;
+    padding-right: .6em;
+    color: turquoise;
+  }
+  header[role=banner] .utilities {
+    width: 100%;
+    display: flex; 
+    justify-content: flex-end; 
+    color:black;
+  }
+  header[role=banner] .utilities li {
+    border-bottom: solid 1px rgba(255, 255, 255, 0.2);
+  }
+  header[role=banner] .utilities li a {
+    padding: .7em;
+    display: block;
+  }
+  
+  /* header */
+  .utilities a:before {
+    content: "\f248";
+    font-family: FontAwesome;
+    padding-right: .6em;
+  }
+  
+  .logout a:before {
+    content: "";
+  }
+  
+  .users a:before {
+    content: "";
+  }

@@ -1,0 +1,34 @@
+// AUTHENTICATION TYPES
+export const USER_LOGIN = "USER_LOGIN";
+export const USER_LOGIN_SUCCESS = "USER_LOGIN_SUCCESS";
+export const USER_LOGIN_FAIL = "USER_LOGIN_FAIL";
+
+// GET MY JOBS
+export const GEY_MY_JOBS = "GEY_MY_JOBS";
+export const GEY_MY_JOBS_SUCCESS = "GEY_MY_JOBS_SUCCESS";
+export const GEY_MY_JOBS_FAIL = "GEY_MY_JOBS_FAIL";
+
+// POST A JOB
+export const POST_JOB = "POST_JOB";
+export const POST_JOB_FAIL = "POST_JOB_FAIL";
+export const POST_JOB_SUCCESS = "POST_JOB_SUCCESS";
+
+// UPDATE JOB 
+export const UPDATE_JOB = "UPDATE_JOB"
+export const UPDATE_JOB_SUCCESS = "UPDATE_JOB_SUCCESS"
+export const UPDATE_JOB_FAIL = "UPDATE_JOB_FAIL"
+
+
+export const REMOVE_JOB = "REMOVE_JOB"
+export const REMOVE_JOB_SUCCESS = "REMOVE_JOB_SUCCESS"
+export const REMOVE_JOB_FAIL = "REMOVE_JOB_FAIL"
+
+
+
+
+
+
+
+
+
+

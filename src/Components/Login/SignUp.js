@@ -3,6 +3,9 @@ import './Login.css'
 import 'antd/dist/antd.css';
 import { Form, Icon, Input, Button, Checkbox, notification } from 'antd';
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux';
+import * as AuthMiddleware from '../../Store/middlewares/authMiddleware';
+import SessionStorageManager from '../../Config/SessionStorageManager';
 
 const title = "Error"
 const desc = 'Please Enter Correct UserName, Email and Password!'
@@ -26,6 +29,14 @@ class Signup extends React.Component {
       icon: <Icon type={icon} style={{ color: color }} />,
     });
   };
+  
+  componentDidMount() {
+    const user = SessionStorageManager.getUser();
+
+    if(user){
+      this.props.history.push('/dashboard')
+    }
+  }
 
 
   handleSubmit = e => {
@@ -121,5 +132,24 @@ class Signup extends React.Component {
 const SignupComp = Form.create({ name: 'normal_login' })(Signup);
 
 
+const mapStateToProps = (state) => {
+    return {
+      isError: state.auth.isError,
+      isLoading: state.auth.isLoading,
+      isLoggedIn: state.auth.isLoggedIn,
+      currentUser: state.auth.currentUser,
+      errorMessage: state.auth.errorMessage,
+      successMessage: state.auth.successMessage,
+  
+    }
+  }
+  
+  const mapDispatchToProps = (dispatch) => {
+    return {
+      authenticate: data => {
+        dispatch(AuthMiddleware.loginMiddleware(data))
+      }
+    }
+  }
 
-export default SignupComp;
+export default connect(mapStateToProps, mapDispatchToProps)(SignupComp);

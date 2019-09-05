@@ -22,11 +22,6 @@
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
   }
 
-  .sign-up{
-    width: 300px;
-    /* border: 10px solid black; */
-  }
-  
   .container {
     padding: 2px 16px;
     display: flex;
@@ -58,9 +53,7 @@
     .card{
       width: 75%;
     }
-    .sign-up{
-      width: 200px;
-    }
+   
   }
 
   @media(max-width: 500px){
@@ -69,17 +62,23 @@
     }
   }
 
-  @media(max-width: 300px){
-    .sign-up{
-      width: 150px;
-    }
-  }
 
-  @media(max-width: 200px){
-    .sign-up{
-      width: 120px;
-    }
-  }
+.login-form {
+  /* max-width: 500px; */
+  width: 70%;
+}
+.login-form-forgot {
+  float: right;
+}
+.login-form-button {
+  width: 100%;
+  background-color: #37A000 !important;
+  color: white !important;
+  font-weight: bold;
+  font-size: 14; 
+  height: 40;
+}
+
 
   
 
