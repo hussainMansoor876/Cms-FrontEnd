@@ -1,7 +1,7 @@
 import React from 'react';
 import './Login.css'
 import 'antd/dist/antd.css';
-import { Form, Icon, Input, Button, Checkbox, notification } from 'antd';
+import { Form, Icon, Input, Button, Upload, notification } from 'antd';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux';
 import * as AuthMiddleware from '../../Store/middlewares/authMiddleware';
@@ -28,6 +28,14 @@ class Signup extends React.Component {
       description: desc,
       icon: <Icon type={icon} style={{ color: color }} />,
     });
+  };
+
+  normFile = e => {
+    console.log('Upload event:', e);
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e && e.fileList;
   };
   
   componentDidMount() {
@@ -113,6 +121,19 @@ class Signup extends React.Component {
                   />,
                 )}
               </Form.Item>
+              <Form.Item className="sign-up">
+                {getFieldDecorator('upload', {
+                  valuePropName: 'fileList',
+                  getValueFromEvent: this.normFile,
+                })(
+                  <Upload name="logo" listType="picture">
+                    <Button>
+                      <Icon type="upload" /> Click to upload
+                    </Button>
+                  </Upload>,
+                )}
+              </Form.Item>
+              
               <Form.Item className="sign-up">
                 <Button htmlType="submit" className="login-form-button" disabled={this.state.disable} style={{ backgroundColor: '#37A000', color: 'white', fontWeight: 'bold', fontSize: 14, height: 40 }}>
                   Sign Up
