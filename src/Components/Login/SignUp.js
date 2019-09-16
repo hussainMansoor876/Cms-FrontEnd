@@ -53,12 +53,15 @@ class Signup extends React.Component {
       if (!err) {
         this.setState({ disable: true })
         console.log('Received values of form: ', values);
-        fetch('https://cmsbackend123.herokuapp.com/register', {
+        var formData = new FormData();
+        formData.append('name', values.name)
+        formData.append('email', values.email)
+        formData.append('password', values.password)
+        formData.append('upload', values.upload[0].originFileObj)
+        formData.append('role','admin')
+        fetch('https://cmsbackend123.herokuapp.com/login/signup', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(values),
+          body: formData,
         })
           .then(response => response.json())
           .then((result) => {
