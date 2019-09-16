@@ -19,7 +19,7 @@ class Header extends Component {
                     {user ? 
                          <div>
                         <li className="users">
-                            <a href="#">{user.fullName}</a>
+                            <a href="#">{user.name}</a>
                         </li>
                         <li className="logout warn">
                             <a onClick={this.handleLogout}>Log Out</a>

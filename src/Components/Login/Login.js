@@ -109,6 +109,7 @@ class Login extends React.Component {
             this.openNotification('Wellcome', 'Successfully Login!!!', 'check')
             SessionStorageManager.setUser(result)
             this.props.loginUser(true)
+            window.location.reload()
             this.props.history.push('/dashboard')
           }
           else {

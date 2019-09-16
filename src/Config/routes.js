@@ -48,7 +48,7 @@ class Routes extends Component {
 
                 {user && <React.Fragment>
                     <Header user={this.state.user} />
-                    <Navbar />
+                    {/* <Navbar /> */}
                 </React.Fragment>}
 
 
