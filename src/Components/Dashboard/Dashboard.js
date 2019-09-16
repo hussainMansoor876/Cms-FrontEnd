@@ -65,20 +65,9 @@ class Dashboard extends React.Component {
 
   componentDidMount() {
     this.setState({ isLoading: true })
-    this.props.getPostedJobs()
   }
 
-  static getDerivedStateFromProps(props, state) {
-
-    if (props.myJobs.length) {
-      return {
-        myJobs: props.myJobs,
-        isLoading: false,
-        successMessage: props.successMessage,
-        filteredJobs: props.myJobs.slice(0,10)
-      }
-    }
-  }
+  
 
   handleCandidates = () => {
     this.setState({ showCandidates: true })

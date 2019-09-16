@@ -55,7 +55,8 @@ class Routes extends Component {
 
                 <Switch>
                     <Route path="/" exact component={Login} />
-                    <Route path="/register" component={SignUp} />
+                    <Route path="/register" exact component={SignUp} />
+                    {/* <Route path="/dashboard" exact component={Dashboard}/> */}
                     <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/dashboard" component={Dashboard} />
                     {/* <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/alljobs" component={AllJobs} />
                     <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/postjob" component={PostJob} />

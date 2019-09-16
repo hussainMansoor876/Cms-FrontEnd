@@ -12,6 +12,7 @@ import SessionStorageManager from '../../Config/SessionStorageManager';
 
 const title = "Error"
 const desc = 'Please Enter Email and Password!'
+console.log(sessionStorage)
 
 
 class Login extends React.Component {
@@ -48,11 +49,11 @@ class Login extends React.Component {
   componentDidMount() {
     const user = SessionStorageManager.getUser();
 
-    if(user){
+    if (user) {
       this.props.history.push('/dashboard')
     }
   }
-  
+
 
   componentDidUpdate(prevProps, prevState) {
 
@@ -88,12 +89,33 @@ class Login extends React.Component {
       if (!validator.isEmail(values.email)) {
         return this.openNotification("Email", "Invalid Email", 'close-circle', 'red')
       }
-      else if(values.password.length < 6){
+      else if (values.password.length < 6) {
         return this.openNotification("Password", "Password must be Atleast 6 Digits", 'close-circle', 'red')
       }
 
       this.setState({ loading: true, disable: true })
-      this.props.authenticate({ email: values.email, password: values.password })
+      console.log(values)
+      fetch('https://cmsbackend123.herokuapp.com/login/signin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values)
+      })
+        .then((res) => res.json())
+        .then((result) => {
+          console.log(result)
+          if (result.success) {
+            this.openNotification('Wellcome', 'Successfully Login!!!', 'check')
+            SessionStorageManager.setUser(result)
+            this.props.loginUser(true)
+            this.props.history.push('/dashboard')
+          }
+          else {
+            this.openNotification(title, result.message, 'close-circle', 'red')
+            this.setState({ disable: false })
+          }
+        })
 
     });
 
@@ -156,7 +178,7 @@ const LoginComp = Form.create({ name: 'normal_login' })(Login);
 
 
 const mapStateToProps = (state) => {
-  console.log("mapToState",state.authReducer)
+  console.log("mapToState", state.authReducer)
   return {
     isLoggedIn: state.authReducer.isLoggedIn,
   }
