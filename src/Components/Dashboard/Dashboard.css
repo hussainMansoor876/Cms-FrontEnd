@@ -300,3 +300,8 @@ td {
 .table-header > th {
   font-weight: bold;
 }
+
+.searchHeader{
+  /* background-color: blue; */
+  display: inline-block;
+}
