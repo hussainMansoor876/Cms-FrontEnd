@@ -3,8 +3,9 @@ import './Login.css'
 import 'antd/dist/antd.css';
 import { Form, Icon, Input, Button, Upload, notification } from 'antd';
 import { Link } from 'react-router-dom'
+import axios from 'axios';
 import { connect } from 'react-redux';
-import * as AuthMiddleware from '../../Store/middlewares/authMiddleware';
+import { loginUser } from '../../Redux/actions/authActions'
 import SessionStorageManager from '../../Config/SessionStorageManager';
 
 const title = "Error"
@@ -58,17 +59,12 @@ class Signup extends React.Component {
         formData.append('email', values.email)
         formData.append('password', values.password)
         formData.append('upload', values.upload[0].originFileObj)
-        formData.append('role','admin')
-        fetch('https://cmsbackend123.herokuapp.com/login/signup', {
-          method: 'POST',
-          body: formData,
-        })
-          .then(response => response.json())
+        axios.post('https://cmsbackend123.herokuapp.com/login/signup', formData)
           .then((result) => {
             console.log(result)
-            if(result.success){
-              this.openNotification('Wellcome', result.message, 'check')
-              this.props.history.push('/home')
+            if(result.data.success){
+              this.openNotification('Wellcome', result.data.message, 'check')
+              this.props.history.push('/dashboard')
             }
             else{
               this.openNotification(title, result.message, 'close-circle', 'red')
@@ -157,23 +153,16 @@ const SignupComp = Form.create({ name: 'normal_login' })(Signup);
 
 
 const mapStateToProps = (state) => {
-    return {
-      isError: state.auth.isError,
-      isLoading: state.auth.isLoading,
-      isLoggedIn: state.auth.isLoggedIn,
-      currentUser: state.auth.currentUser,
-      errorMessage: state.auth.errorMessage,
-      successMessage: state.auth.successMessage,
-  
-    }
+  console.log("mapToState",state.authReducer)
+  return {
+    isLoggedIn: state.authReducer.isLoggedIn,
   }
-  
-  const mapDispatchToProps = (dispatch) => {
-    return {
-      authenticate: data => {
-        dispatch(AuthMiddleware.loginMiddleware(data))
-      }
-    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loginUser: (isLoggedIn) => dispatch(loginUser(isLoggedIn)),
   }
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignupComp);

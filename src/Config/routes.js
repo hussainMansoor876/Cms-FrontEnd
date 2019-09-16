@@ -4,13 +4,11 @@ import Login from '../Components/Login/Login';
 import SignUp from '../Components/Login/SignUp'
 import { connect } from 'react-redux'
 import SessionStorageManager from './SessionStorageManager';
-
+import { loginUser } from '../Redux/actions/authActions'
 import Dashboard from '../Components/Dashboard/Dashboard'
-import AllJobs from '../Components/AllJobs/Alljobs'
 import Header from '../Components/Header/Header';
 import Navbar from '../Components/Navbar/Navbar';
-import PostJob from '../Components/PostJob/PostJob';
-import EditJob from '../Components/EditJob/EditJob';
+
 
 
 function PrivateRoute({ component: Component, isLoggedIn, ...rest }) {
@@ -59,9 +57,9 @@ class Routes extends Component {
                     <Route path="/" exact component={Login} />
                     <Route path="/register" component={SignUp} />
                     <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/dashboard" component={Dashboard} />
-                    <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/alljobs" component={AllJobs} />
+                    {/* <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/alljobs" component={AllJobs} />
                     <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/postjob" component={PostJob} />
-                    <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/editjob" component={EditJob} />
+                    <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/editjob" component={EditJob} /> */}
 
                 </Switch>
             </Router>
@@ -69,11 +67,13 @@ class Routes extends Component {
     }
 }
 
+
 const mapStateToProps = (state) => {
+    console.log("mapToState",state.authReducer)
     return {
-        isLoggedIn: state.auth.isLoggedIn,
+        isLoggedIn: state.authReducer.isLoggedIn,
     }
-}
+  }
 
 export default connect(mapStateToProps, null)(Routes)
 

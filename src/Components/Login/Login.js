@@ -7,7 +7,7 @@ import { Form, Icon, Input, Button, Checkbox, notification } from 'antd';
 import { Link } from 'react-router-dom'
 import validator from 'validator'
 import { connect } from 'react-redux';
-import * as AuthMiddleware from '../../Store/middlewares/authMiddleware';
+import { loginUser } from '../../Redux/actions/authActions'
 import SessionStorageManager from '../../Config/SessionStorageManager';
 
 const title = "Error"
@@ -156,23 +156,15 @@ const LoginComp = Form.create({ name: 'normal_login' })(Login);
 
 
 const mapStateToProps = (state) => {
+  console.log("mapToState",state.authReducer)
   return {
-
-    isError: state.auth.isError,
-    isLoading: state.auth.isLoading,
-    isLoggedIn: state.auth.isLoggedIn,
-    currentUser: state.auth.currentUser,
-    errorMessage: state.auth.errorMessage,
-    successMessage: state.auth.successMessage,
-
+    isLoggedIn: state.authReducer.isLoggedIn,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    authenticate: data => {
-      dispatch(AuthMiddleware.loginMiddleware(data))
-    }
+    loginUser: (isLoggedIn) => dispatch(loginUser(isLoggedIn)),
   }
 }
 

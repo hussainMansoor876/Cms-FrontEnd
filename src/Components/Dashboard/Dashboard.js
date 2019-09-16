@@ -4,7 +4,7 @@ import './Dashboard.css'
 import InfoCard from '../InfoCard/InfoCard';
 import SessionStorageManager from '../../Config/SessionStorageManager';
 import { connect } from 'react-redux';
-import * as jobMiddleware from '../../Store/middlewares/jobMiddleware';
+import { loginUser } from '../../Redux/actions/authActions'
 import { Modal, Button } from 'antd'
 import {Link} from 'react-router-dom'
 import Header from '../Header/Header';
@@ -223,22 +223,15 @@ class Dashboard extends React.Component {
 
 
 const mapStateToProps = (state) => {
+  console.log("mapToState",state.authReducer)
   return {
-
-    isLoading: state.jobs.isLoading,
-    isError: state.jobs.isError,
-    errorMessage: state.jobs.errorMessage,
-    successMessage: state.jobs.successMessage,
-    myJobs: state.jobs.myJobs,
-
+    isLoggedIn: state.authReducer.isLoggedIn,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getPostedJobs: () => {
-      dispatch(jobMiddleware.getPostedJobs())
-    }
+    loginUser: (isLoggedIn) => dispatch(loginUser(isLoggedIn)),
   }
 }
 
