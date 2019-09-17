@@ -232,7 +232,7 @@ td {
   }
 
   main[role=main] {
-    margin: 75px 0 40px 200px;
+    margin: 75px 0 40px 5px;
   }
   main[role=main]:after {
     content: "";

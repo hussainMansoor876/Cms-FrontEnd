@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React, { Component } from 'react'
 import SessionStorageManager from '../../Config/SessionStorageManager';
+import { Link } from 'react-router-dom'
 import './Header.css'
 
 class Header extends Component {
@@ -14,7 +15,7 @@ class Header extends Component {
         const { user } = this.props
         return (
             <header role="banner">
-                <h1>Admin Panel</h1>
+                <h1>CMS News Articles</h1>
                 <ul className="utilities">
                     {user ? 
                          <div>
