@@ -11,7 +11,7 @@
   .card {
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
-    position: relative;
+    /* position: relative; */
     background-color: #fff;
     margin: 10%;
     padding: 30px;
@@ -23,17 +23,14 @@
   }
 
   .container {
-    padding: 2px 16px;
-    display: flex;
+    /* padding: 2px 16px; */
+    /* display: flex; */
+    /* align-self: center; */
     justify-content: center;
-    align-items: center;
+    /* justify-content: center; */
+    /* align-items: center; */
   }
 
-  @media(max-width: 1300px){
-    .card{
-      width: 50%;
-    }
-  }
 
   @media(max-width: 1000px){
     .card{
@@ -65,7 +62,7 @@
 
 .login-form {
   /* max-width: 500px; */
-  width: 70%;
+  width: auto;
 }
 .login-form-forgot {
   float: right;

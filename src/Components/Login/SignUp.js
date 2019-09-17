@@ -88,7 +88,7 @@ class Signup extends React.Component {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'ceenter' }}>
         <div className="card">
-          <div className="container">
+          <div>
             <Form onSubmit={this.handleSubmit} className="login-form">
               <h1 style={{ textAlign: 'center' }} >Register</h1>
               <Form.Item className="sign-up">

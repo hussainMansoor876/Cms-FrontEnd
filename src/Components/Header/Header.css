@@ -18,7 +18,7 @@ header[role=banner] {
   header[role=banner] .utilities {
     width: 100%;
     display: flex; 
-    justify-content: flex-end; 
+    justify-content: center; 
     color:black;
   }
   header[role=banner] .utilities li {

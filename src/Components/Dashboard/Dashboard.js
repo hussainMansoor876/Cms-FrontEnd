@@ -5,98 +5,83 @@ import InfoCard from '../InfoCard/InfoCard';
 import SessionStorageManager from '../../Config/SessionStorageManager';
 import { connect } from 'react-redux';
 import { loginUser } from '../../Redux/actions/authActions'
-import { Modal, Button, Input } from 'antd'
-import { Link } from 'react-router-dom'
-import Header from '../Header/Header';
-import Navbar from '../Navbar/Navbar';
+import 'antd/dist/antd.css';
+import { Menu, Icon, Input, Typography } from 'antd';
+import { Link } from 'react-router-dom';
 
-const { Search } = Input
+const { SubMenu } = Menu;
+const { Search } = Input;
+
 
 class Dashboard extends React.Component {
 
 
   state = {
-    isLoading: false,
-    isError: false,
-    errorMessage: "",
-    successMessage: "",
-    myJobs: [],
-    showCandidates: false,
-    visible: false,
-    currentJob: {},
-    filteredJobs: []
+    current: 'mail',
+    user: null
   }
 
-
-  showModal = (title, desc, location, role, date, CVS) => {
-
-    var currentJob = {
-      jobTitle: title,
-      jobDescription: desc,
-      // salary,
-      location,
-      role,
-      createdAt: date,
-      CVS,
-    }
-
+  handleClick = e => {
+    console.log('click ', e);
     this.setState({
-      visible: true,
-      currentJob
+      current: e.key,
     });
   };
 
-
-  handleOk = e => {
-    this.setState({
-      visible: false,
-      showCandidates: false
-    });
-  };
-
-  handleCancel = e => {
-    this.setState({
-      visible: false,
-      showCandidates: false
-    });
-  };
-
-
-
-
-
-
-  componentDidMount() {
-    this.setState({ isLoading: true })
+  componentWillMount(){
+    const user = SessionStorageManager.getUser();
+        if (user) {
+            this.setState({ user })
+        }
   }
 
 
-
-  handleCandidates = () => {
-    this.setState({ showCandidates: true })
-  }
 
 
   render() {
-    const user = SessionStorageManager.getUser()
-    const { myJobs, visible, currentJob, filteredJobs } = this.state
+    const { user } = this.state
     return (
-      <div >
+      <div style={{ display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ width: '50%', height: "auto", backgroundColor: 'red' }}>
 
 
-        <main role="main">
-          <div className="searchHeader" style={{ flex: 1, flexDirection: 'row'}}>
-            <Search
-              placeholder="input search text"
-              enterButton="Search"
-              size="large"
-              onSearch={value => console.log(value)}
-              style={{ width: 500 }}
-            />
-          </div>
+          <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal" style={{ display: "flex", justifyContent: 'space-between', alignItems: 'center', paddingTop: 10, paddingBottom: 10 }}>
 
-        </main>
-        <footer role="contentinfo">Admin Panel by Umair Ahmed</footer>
+
+
+            <Menu.Item style={{ fontSize: 24, fontWeight: 'bold', alignSelf: 'flex-start' }}>
+              CMS News Article
+        </Menu.Item>
+            <Menu.Item key="app">
+              <Link to="/home">
+                Add New Article
+          </Link>
+            </Menu.Item>
+            <Menu.Item>
+              <Link to="/home">
+                Photos-Gallery
+          </Link>
+            </Menu.Item>
+          </Menu>
+        </div>
+        <div style={{ width: '50%', paddingTop: 10, paddingBottom: 10, height: "auto", backgroundColor: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Search
+            placeholder="Search by"
+            enterButton="Search"
+            size="large"
+            style={{ paddingTop: 5 }}
+            onSearch={value => console.log(value)}
+          />
+          <Menu>
+            {user ? 
+            <Menu.Item key="app" style={{ paddingRight: 30, paddingLeft: 20 }}>
+              <Icon
+                type="arrow-right"
+              />
+              Logout
+            </Menu.Item> : null}
+          </Menu>
+        </div>
       </div>
     )
   }

@@ -47,7 +47,7 @@ class Routes extends Component {
             <Router>
 
                 {user && <React.Fragment>
-                    <Header user={this.state.user} />
+                    {/* <Header user={this.state.user} /> */}
                     {/* <Navbar /> */}
                 </React.Fragment>}
 
@@ -58,6 +58,7 @@ class Routes extends Component {
                     <Route path="/register" exact component={SignUp} />
                     {/* <Route path="/dashboard" exact component={Dashboard}/> */}
                     <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/dashboard" component={Dashboard} />
+                    <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/home" component={Dashboard} />
                     {/* <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/alljobs" component={AllJobs} />
                     <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/postjob" component={PostJob} />
                     <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/editjob" component={EditJob} /> */}
