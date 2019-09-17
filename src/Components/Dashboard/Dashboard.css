@@ -305,3 +305,32 @@ td {
   /* background-color: blue; */
   display: inline-block;
 }
+
+.right{
+  width: 60%;
+}
+
+.left{
+  width: 40%;
+}
+
+@media(max-width: 900px){
+  .right{
+    width: 65%;
+  }
+  
+  .left{
+    width: 35%;
+  }
+}
+
+@media(max-width: 400px){
+  .right{
+    width: 80%;
+  }
+  
+  .left{
+    width: 20%;
+  }
+}
+

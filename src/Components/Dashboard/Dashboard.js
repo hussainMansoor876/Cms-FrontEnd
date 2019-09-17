@@ -35,7 +35,7 @@ class Dashboard extends React.Component {
     }
   }
 
-  logout(){
+  logout() {
     sessionStorage.clear()
     window.location.reload()
   }
@@ -47,16 +47,26 @@ class Dashboard extends React.Component {
     const { user } = this.state
     return (
       <div style={{ display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ width: '50%', height: "auto", backgroundColor: 'red' }}>
+        <div style={{ paddingTop: 10, paddingBottom: 10, height: 'auto', backgroundColor: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} className="right">
+          <Search
+            placeholder="Search by"
+            enterButton="Search"
+            size="large"
+            // style={{ paddingTop: 5 }}
+            style={{ paddingTop: 18, paddingBottom: 10, alignSelf: 'center' }}
+            onSearch={value => console.log(value)}
+          />
+        </div>
+        <div style={{ height: 'auto' }} className="left">
 
 
           <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal" style={{ display: "flex", justifyContent: 'space-between', alignItems: 'center', paddingTop: 10, paddingBottom: 10 }}>
 
 
 
-            <Menu.Item style={{ fontSize: 24, fontWeight: 'bold', alignSelf: 'flex-start' }}>
+            {/* <Menu.Item style={{ fontSize: 24, fontWeight: 'bold', alignSelf: 'flex-start' }}>
               CMS News Article
-        </Menu.Item>
+        </Menu.Item> */}
             <Menu.Item key="app">
               <Link to="/home">
                 Add New Article
@@ -67,26 +77,20 @@ class Dashboard extends React.Component {
                 Photos-Gallery
           </Link>
             </Menu.Item>
-          </Menu>
-        </div>
-        <div style={{ width: '50%', paddingTop: 10, paddingBottom: 10, height: "auto", backgroundColor: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Search
-            placeholder="Search by"
-            enterButton="Search"
-            size="large"
-            style={{ paddingTop: 5 }}
-            onSearch={value => console.log(value)}
-          />
-          <Menu>
             {user ?
-              <Menu.Item key="app" style={{ paddingRight: 30, paddingLeft: 20, height: 'auto' }}>
+              <Menu.Item key="app" style={{ paddingRight: 30, paddingLeft: 20, height: 70, paddingTop: 20 }}>
                 <Button onClick={() => this.logout()}>
                   <Icon
                     type="arrow-right"
                   />
                   Logout
               </Button>
-              </Menu.Item> : null}
+              </Menu.Item> : <Menu.Item key="app" style={{ paddingRight: 30, paddingLeft: 20, height: 70, paddingTop: 10 }}>
+                <Icon
+                  type="arrow-right"
+                />
+                Logout
+              </Menu.Item>}
           </Menu>
         </div>
       </div>

@@ -128,7 +128,7 @@ class Login extends React.Component {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <div className="card">
-          <div>
+          <div className="container">
             <Form onSubmit={this.handleSubmit} className="login-form">
               <h1 style={{ textAlign: 'center' }}>Login</h1>
               <Form.Item>
