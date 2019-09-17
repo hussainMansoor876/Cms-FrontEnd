@@ -6,7 +6,7 @@ import SessionStorageManager from '../../Config/SessionStorageManager';
 import { connect } from 'react-redux';
 import { loginUser } from '../../Redux/actions/authActions'
 import 'antd/dist/antd.css';
-import { Menu, Icon, Input, Typography } from 'antd';
+import { Menu, Icon, Input, Button } from 'antd';
 import { Link } from 'react-router-dom';
 
 const { SubMenu } = Menu;
@@ -28,11 +28,16 @@ class Dashboard extends React.Component {
     });
   };
 
-  componentWillMount(){
+  componentWillMount() {
     const user = SessionStorageManager.getUser();
-        if (user) {
-            this.setState({ user })
-        }
+    if (user) {
+      this.setState({ user })
+    }
+  }
+
+  logout(){
+    sessionStorage.clear()
+    window.location.reload()
   }
 
 
@@ -73,13 +78,15 @@ class Dashboard extends React.Component {
             onSearch={value => console.log(value)}
           />
           <Menu>
-            {user ? 
-            <Menu.Item key="app" style={{ paddingRight: 30, paddingLeft: 20 }}>
-              <Icon
-                type="arrow-right"
-              />
-              Logout
-            </Menu.Item> : null}
+            {user ?
+              <Menu.Item key="app" style={{ paddingRight: 30, paddingLeft: 20, height: 'auto' }}>
+                <Button onClick={() => this.logout()}>
+                  <Icon
+                    type="arrow-right"
+                  />
+                  Logout
+              </Button>
+              </Menu.Item> : null}
           </Menu>
         </div>
       </div>
