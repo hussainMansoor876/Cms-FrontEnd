@@ -47,6 +47,8 @@ class Article extends React.Component {
     author: [],
     cities: [],
     categories: [],
+    topics: [],
+    topicVisible: false,
     catVisible: false,
     confirmDirty: false,
     autoCompleteResult: [],
@@ -71,6 +73,20 @@ class Article extends React.Component {
   };
 
   handleClose2 = removedTag => {
+    const categories = this.state.categories.filter(tag => tag !== removedTag);
+    this.setState({ 
+      categories
+     });
+  };
+
+  handleClose3 = removedTag => {
+    const topics = this.state.topics.filter(tag => tag !== removedTag);
+    this.setState({ 
+      topics
+     });
+  };
+
+  handleClose4 = removedTag => {
     const categories = this.state.categories.filter(tag => tag !== removedTag);
     this.setState({ 
       categories
@@ -122,6 +138,19 @@ class Article extends React.Component {
     this.setState({
       categories,
       catVisible: false,
+      inputValue: '',
+    });
+  };
+
+  handleTopicConfirm = () => {
+    const { inputValue } = this.state;
+    let { topics } = this.state;
+    if (inputValue && topics.indexOf(inputValue) === -1) {
+      topics = [...topics, inputValue];
+    }
+    this.setState({
+      topics,
+      topicVisible: false,
       inputValue: '',
     });
   };
@@ -188,6 +217,46 @@ class Article extends React.Component {
     );
   };
 
+  forMap3 = tag => {
+    const tagElem = (
+      <Tag
+        closable
+        style={{ fontSize: 16, paddingRight: 10, paddingLeft: 10 }}
+        onClose={e => {
+          e.preventDefault();
+          this.handleClose3(tag);
+        }}
+      >
+        {tag}
+      </Tag>
+    );
+    return (
+      <span key={tag} style={{ display: 'inline-block' }}>
+        {tagElem}
+      </span>
+    );
+  };
+
+  forMap4 = tag => {
+    const tagElem = (
+      <Tag
+        closable
+        style={{ fontSize: 16, paddingRight: 10, paddingLeft: 10 }}
+        onClose={e => {
+          e.preventDefault();
+          this.handleClose4(tag);
+        }}
+      >
+        {tag}
+      </Tag>
+    );
+    return (
+      <span key={tag} style={{ display: 'inline-block' }}>
+        {tagElem}
+      </span>
+    );
+  };
+
   handleClick = e => {
     console.log('click ', e);
     this.setState({
@@ -223,10 +292,11 @@ class Article extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { user, inputVisible, inputValue, author, inputVisible1, cities, catVisible, categories } = this.state
+    const { user, inputVisible, inputValue, author, inputVisible1, cities, catVisible, categories, topics, topicVisible } = this.state
     const tagChild = author.map(this.forMap)
     const tagCity = cities.map(this.forMap1)
     const tagCategory = categories.map(this.forMap2)
+    const tagTopic = topics.map(this.forMap3)
 
     return (
       <div>
@@ -441,6 +511,48 @@ class Article extends React.Component {
                   {!catVisible && (
                     <Tag className="addtag" onClick={() => this.setState({ catVisible: true }, () => this.cat.focus())} style={{ background: '#fff', borderStyle: 'dashed', fontSize: 14, padding: 5, paddingLeft: 10, paddingRight: 10 }}>
                       <Icon type="plus" /> Add Category
+          </Tag>
+                  )}
+                </div>
+              )}
+            </Form.Item>
+            <Form.Item label={topics.length ? "Topics" : "Add Topics"}>
+              {getFieldDecorator('topics', {
+                rules: [{ required: true, message: 'Please Add Topic' }]
+              })(
+                <div>
+                  <div>
+                    <TweenOneGroup
+                      enter={{
+                        scale: 0.8,
+                        opacity: 0,
+                        type: 'from',
+                        duration: 100,
+                        onComplete: e => {
+                          e.target.style = '';
+                        },
+                      }}
+                      leave={{ opacity: 0, width: 0, scale: 0, duration: 200 }}
+                      appear={false}
+                    >
+                      {tagTopic}
+                    </TweenOneGroup>
+                  </div>
+                  {topicVisible && (
+                    <Input
+                      ref={input => (this.topic = input)}
+                      type="text"
+                      size="default"
+                      style={{ width: 120 }}
+                      value={inputValue}
+                      onChange={this.handleInputChange}
+                      onBlur={this.handleTopicConfirm}
+                      onPressEnter={this.handleTopicConfirm}
+                    />
+                  )}
+                  {!topicVisible && (
+                    <Tag className="addtag" onClick={() => this.setState({ topicVisible: true }, () => this.topic.focus())} style={{ background: '#fff', borderStyle: 'dashed', fontSize: 14, padding: 5, paddingLeft: 10, paddingRight: 10 }}>
+                      <Icon type="plus" /> Add Topic
           </Tag>
                   )}
                 </div>
