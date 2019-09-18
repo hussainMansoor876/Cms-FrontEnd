@@ -12,6 +12,7 @@
     "heroku-ssl-redirect": "^0.0.4",
     "html-to-text": "^5.1.1",
     "path": "^0.12.7",
+    "rc-tween-one": "^2.6.3",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-draft-wysiwyg": "^1.13.2",
