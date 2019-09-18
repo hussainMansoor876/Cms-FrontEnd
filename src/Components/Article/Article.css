@@ -314,6 +314,17 @@ td {
   width: 40%;
 }
 
+.articleForm{
+  width: 80%;
+}
+
+@media(max-width: 580px){
+  .articleForm{
+    width: 70%;
+    padding-left: 20px
+  }
+}
+
 @media(max-width: 900px){
   .right{
     width: 65%;
@@ -348,6 +359,11 @@ td {
   }
   .search1{
     padding-left: 2px;
+  }
+
+  .articleForm{
+    width: 60%;
+    padding-left: 20px
   }
 }
 
