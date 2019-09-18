@@ -4,10 +4,9 @@ import Login from '../Components/Login/Login';
 import SignUp from '../Components/Login/SignUp'
 import { connect } from 'react-redux'
 import SessionStorageManager from './SessionStorageManager';
-import { loginUser } from '../Redux/actions/authActions'
-import Dashboard from '../Components/Dashboard/Dashboard'
-import Header from '../Components/Header/Header';
-import Navbar from '../Components/Navbar/Navbar';
+// import { loginUser } from '../Redux/actions/authActions'
+import Dashboard from '../Components/Dashboard/Dashboard';
+import Article from '../Components/Article/Article';
 
 
 
@@ -58,7 +57,7 @@ class Routes extends Component {
                     <Route path="/register" exact component={SignUp} />
                     {/* <Route path="/dashboard" exact component={Dashboard}/> */}
                     <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/dashboard" component={Dashboard} />
-                    <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/home" component={Dashboard} />
+                    <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/article" component={Article} />
                     {/* <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/alljobs" component={AllJobs} />
                     <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/postjob" component={PostJob} />
                     <PrivateRoute isLoggedIn={(this.props.isLoggedIn || this.state.isLoggedIn)} exact path="/editjob" component={EditJob} /> */}

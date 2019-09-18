@@ -1,6 +1,6 @@
 /*eslint-disable*/
 import React, { Component } from 'react';
-import './Dashboard.css'
+import './Article.css'
 import SessionStorageManager from '../../Config/SessionStorageManager';
 import { connect } from 'react-redux';
 import { loginUser } from '../../Redux/actions/authActions'
@@ -12,7 +12,7 @@ const { Option } = Select;
 const { Search } = Input;
 
 
-class Dashboard extends React.Component {
+class Article extends React.Component {
 
 
   state = {
@@ -69,7 +69,7 @@ class Dashboard extends React.Component {
 
           <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal" style={{ display: "flex", justifyContent: 'space-between', alignItems: 'center', paddingTop: 10, paddingBottom: 10 }}>
             <Menu.Item key="article">
-              <Link to="/article">
+              <Link to="/home">
                 Add New Article
           </Link>
             </Menu.Item>
@@ -116,4 +116,4 @@ const mapDispatchToProps = (dispatch) => {
 
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
+export default connect(mapStateToProps, mapDispatchToProps)(Article)
