@@ -6,10 +6,10 @@ import SessionStorageManager from '../../Config/SessionStorageManager';
 import { connect } from 'react-redux';
 import { loginUser } from '../../Redux/actions/authActions'
 import 'antd/dist/antd.css';
-import { Menu, Icon, Input, Button } from 'antd';
+import { Menu, Icon, Input, Button, Select } from 'antd';
 import { Link } from 'react-router-dom';
 
-const { SubMenu } = Menu;
+const { Option } = Select;
 const { Search } = Input;
 
 
@@ -40,7 +40,9 @@ class Dashboard extends React.Component {
     window.location.reload()
   }
 
-
+  handleChange(value) {
+    console.log(`selected ${value}`);
+  }
 
 
   render() {
@@ -53,9 +55,15 @@ class Dashboard extends React.Component {
             enterButton="Search"
             size="large"
             // style={{ paddingTop: 5 }}
-            style={{ paddingTop: 18, paddingBottom: 10, alignSelf: 'center' }}
+            className="search1"
+            style={{ paddingTop: 18, paddingBottom: 10, paddingLeft: 5, alignSelf: 'center' }}
             onSearch={value => console.log(value)}
           />
+          <Select defaultValue="City" size="large" className="selector" style={{ width: 120, marginLeft: 10, paddingTop: 8 }} onChange={(value) => this.handleChange(value)}>
+            <Option value="city">City</Option>
+            <Option value="categories">Category</Option>
+            <Option value="topics">Topic</Option>
+          </Select>
         </div>
         <div style={{ height: 70, backgroundColor: 'white' }} className="left">
 
@@ -72,13 +80,13 @@ class Dashboard extends React.Component {
           </Link>
             </Menu.Item>
             {user ?
-              <Menu.Item key="logout" style={{ paddingRight: 30, paddingLeft: 20, height: 70, paddingTop: 20 }}>
-                <Button onClick={() => this.logout()}>
+              <Menu.Item key="logout" onClick={() => this.logout()}>
+                {/* <Button onClick={() => this.logout()}> */}
                   <Icon
                     type="arrow-right"
                   />
                   Logout
-              </Button>
+              {/* </Button> */}
               </Menu.Item> : <Menu.Item key="logout" style={{ paddingRight: 30, paddingLeft: 20, height: 70, paddingTop: 10 }}>
                 <Icon
                   type="arrow-right"

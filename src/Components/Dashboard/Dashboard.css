@@ -324,13 +324,30 @@ td {
   }
 }
 
-@media(max-width: 400px){
+@media(max-width: 550px){
   .right{
     width: 80%;
   }
   
   .left{
     width: 20%;
+  }
+}
+
+@media(max-width: 400px){
+  .right{
+    width: 85%;
+  }
+  
+  .left{
+    width: 15%;
+  }
+
+  .selector{
+    margin-left: 5px;
+  }
+  .search1{
+    padding-left: 2px;
   }
 }
 
