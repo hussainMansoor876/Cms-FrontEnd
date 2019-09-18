@@ -48,6 +48,8 @@ class Article extends React.Component {
     cities: [],
     categories: [],
     topics: [],
+    gNews: [],
+    gVisible: false,
     topicVisible: false,
     catVisible: false,
     confirmDirty: false,
@@ -87,9 +89,9 @@ class Article extends React.Component {
   };
 
   handleClose4 = removedTag => {
-    const categories = this.state.categories.filter(tag => tag !== removedTag);
+    const gNews = this.state.gNews.filter(tag => tag !== removedTag);
     this.setState({ 
-      categories
+      gNews
      });
   };
 
@@ -151,6 +153,19 @@ class Article extends React.Component {
     this.setState({
       topics,
       topicVisible: false,
+      inputValue: '',
+    });
+  };
+
+  handleGNewsConfirm = () => {
+    const { inputValue } = this.state;
+    let { gNews } = this.state;
+    if (inputValue && gNews.indexOf(inputValue) === -1) {
+      gNews = [...gNews, inputValue];
+    }
+    this.setState({
+      gNews,
+      gVisible: false,
       inputValue: '',
     });
   };
@@ -292,11 +307,12 @@ class Article extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { user, inputVisible, inputValue, author, inputVisible1, cities, catVisible, categories, topics, topicVisible } = this.state
+    const { user, inputVisible, inputValue, author, inputVisible1, cities, catVisible, categories, topics, topicVisible, gNews, gVisible } = this.state
     const tagChild = author.map(this.forMap)
     const tagCity = cities.map(this.forMap1)
     const tagCategory = categories.map(this.forMap2)
     const tagTopic = topics.map(this.forMap3)
+    const tagGNews = gNews.map(this.forMap4)
 
     return (
       <div>
@@ -553,6 +569,48 @@ class Article extends React.Component {
                   {!topicVisible && (
                     <Tag className="addtag" onClick={() => this.setState({ topicVisible: true }, () => this.topic.focus())} style={{ background: '#fff', borderStyle: 'dashed', fontSize: 14, padding: 5, paddingLeft: 10, paddingRight: 10 }}>
                       <Icon type="plus" /> Add Topic
+          </Tag>
+                  )}
+                </div>
+              )}
+            </Form.Item>
+            <Form.Item label={gNews.length ? "Google News Keywords" : "Google News Keywords"}>
+              {getFieldDecorator('gNews', {
+                rules: [{ required: true, message: 'Please Add Google News Keyword' }]
+              })(
+                <div>
+                  <div>
+                    <TweenOneGroup
+                      enter={{
+                        scale: 0.8,
+                        opacity: 0,
+                        type: 'from',
+                        duration: 100,
+                        onComplete: e => {
+                          e.target.style = '';
+                        },
+                      }}
+                      leave={{ opacity: 0, width: 0, scale: 0, duration: 200 }}
+                      appear={false}
+                    >
+                      {tagGNews}
+                    </TweenOneGroup>
+                  </div>
+                  {gVisible && (
+                    <Input
+                      ref={input => (this.gNews = input)}
+                      type="text"
+                      size="default"
+                      style={{ width: 120 }}
+                      value={inputValue}
+                      onChange={this.handleInputChange}
+                      onBlur={this.handleGNewsConfirm}
+                      onPressEnter={this.handleGNewsConfirm}
+                    />
+                  )}
+                  {!gVisible && (
+                    <Tag className="addtag" onClick={() => this.setState({ gVisible: true }, () => this.gNews.focus())} style={{ background: '#fff', borderStyle: 'dashed', fontSize: 14, padding: 5, paddingLeft: 10, paddingRight: 10 }}>
+                      <Icon type="plus" /> Add Keyword
           </Tag>
                   )}
                 </div>
