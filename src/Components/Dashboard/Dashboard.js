@@ -47,7 +47,7 @@ class Dashboard extends React.Component {
     const { user } = this.state
     return (
       <div style={{ display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ paddingTop: 10, paddingBottom: 10, height: 'auto', backgroundColor: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} className="right">
+        <div style={{ paddingTop: 10, paddingBottom: 10, height: 70, backgroundColor: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} className="right">
           <Search
             placeholder="Search by"
             enterButton="Search"
@@ -57,35 +57,29 @@ class Dashboard extends React.Component {
             onSearch={value => console.log(value)}
           />
         </div>
-        <div style={{ height: 'auto' }} className="left">
+        <div style={{ height: 70, backgroundColor: 'white' }} className="left">
 
 
           <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal" style={{ display: "flex", justifyContent: 'space-between', alignItems: 'center', paddingTop: 10, paddingBottom: 10 }}>
-
-
-
-            {/* <Menu.Item style={{ fontSize: 24, fontWeight: 'bold', alignSelf: 'flex-start' }}>
-              CMS News Article
-        </Menu.Item> */}
-            <Menu.Item key="app">
+            <Menu.Item key="article">
               <Link to="/home">
                 Add New Article
           </Link>
             </Menu.Item>
-            <Menu.Item>
+            <Menu.Item key="gallery">
               <Link to="/home">
                 Photos-Gallery
           </Link>
             </Menu.Item>
             {user ?
-              <Menu.Item key="app" style={{ paddingRight: 30, paddingLeft: 20, height: 70, paddingTop: 20 }}>
+              <Menu.Item key="logout" style={{ paddingRight: 30, paddingLeft: 20, height: 70, paddingTop: 20 }}>
                 <Button onClick={() => this.logout()}>
                   <Icon
                     type="arrow-right"
                   />
                   Logout
               </Button>
-              </Menu.Item> : <Menu.Item key="app" style={{ paddingRight: 30, paddingLeft: 20, height: 70, paddingTop: 10 }}>
+              </Menu.Item> : <Menu.Item key="logout" style={{ paddingRight: 30, paddingLeft: 20, height: 70, paddingTop: 10 }}>
                 <Icon
                   type="arrow-right"
                 />
