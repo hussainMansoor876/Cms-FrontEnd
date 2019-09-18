@@ -46,6 +46,8 @@ class Article extends React.Component {
   state = {
     author: [],
     cities: [],
+    categories: [],
+    catVisible: false,
     confirmDirty: false,
     autoCompleteResult: [],
     user: null,
@@ -56,8 +58,23 @@ class Article extends React.Component {
 
   handleClose = removedTag => {
     const author = this.state.author.filter(tag => tag !== removedTag);
-    console.log(author);
-    this.setState({ author });
+    this.setState({ 
+      author,
+     });
+  };
+
+  handleClose1 = removedTag => {
+    const cities = this.state.cities.filter(tag => tag !== removedTag);
+    this.setState({ 
+      cities
+     });
+  };
+
+  handleClose2 = removedTag => {
+    const categories = this.state.categories.filter(tag => tag !== removedTag);
+    this.setState({ 
+      categories
+     });
   };
 
   showInput = () => {
@@ -96,15 +113,69 @@ class Article extends React.Component {
     });
   };
 
+  handleCatConfirm = () => {
+    const { inputValue } = this.state;
+    let { categories } = this.state;
+    if (inputValue && categories.indexOf(inputValue) === -1) {
+      categories = [...categories, inputValue];
+    }
+    this.setState({
+      categories,
+      catVisible: false,
+      inputValue: '',
+    });
+  };
+
   saveInputRef = input => (this.input = input);
 
   forMap = tag => {
     const tagElem = (
       <Tag
         closable
+        style={{ fontSize: 16, paddingRight: 10, paddingLeft: 10 }}
         onClose={e => {
           e.preventDefault();
           this.handleClose(tag);
+        }}
+      >
+        {tag}
+      </Tag>
+    );
+    return (
+      <span key={tag} style={{ display: 'inline-block' }}>
+        {tagElem}
+      </span>
+    );
+  };
+
+  forMap1 = tag => {
+    const tagElem = (
+      <Tag
+        closable
+        style={{ fontSize: 16, paddingRight: 10, paddingLeft: 10 }}
+        onClose={e => {
+          e.preventDefault();
+          this.handleClose1(tag);
+        }}
+      >
+        {tag}
+      </Tag>
+    );
+    return (
+      <span key={tag} style={{ display: 'inline-block' }}>
+        {tagElem}
+      </span>
+    );
+  };
+
+  forMap2 = tag => {
+    const tagElem = (
+      <Tag
+        closable
+        style={{ fontSize: 16, paddingRight: 10, paddingLeft: 10 }}
+        onClose={e => {
+          e.preventDefault();
+          this.handleClose2(tag);
         }}
       >
         {tag}
@@ -152,9 +223,10 @@ class Article extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { user, inputVisible, inputValue, author, inputVisible1, cities } = this.state
-    const tagCity = cities.map(this.forMap)
-    const tagChild = author.map(this.forMap);
+    const { user, inputVisible, inputValue, author, inputVisible1, cities, catVisible, categories } = this.state
+    const tagChild = author.map(this.forMap)
+    const tagCity = cities.map(this.forMap1)
+    const tagCategory = categories.map(this.forMap2)
 
     return (
       <div>
@@ -250,7 +322,7 @@ class Article extends React.Component {
             </Form.Item>
             <Form.Item label={author.length ? "Author" : "Add Author"}>
               {getFieldDecorator('author', {
-                rules: [{ required: true, message: 'Please Select True or False' }]
+                rules: [{ required: true, message: 'Please Add Author Name' }]
               })(
                 <div>
                   <div>
@@ -274,16 +346,16 @@ class Article extends React.Component {
                     <Input
                       ref={this.saveInputRef}
                       type="text"
-                      size="small"
-                      style={{ width: 78 }}
+                      size="default"
+                      style={{ width: 120 }}
                       value={inputValue}
-                      onChange={(e) => this.setState({ inputValue: e.target.value })}
+                      onChange={this.handleInputChange}
                       onBlur={this.handleInputConfirm}
                       onPressEnter={this.handleInputConfirm}
                     />
                   )}
                   {!inputVisible && (
-                    <Tag onClick={this.showInput} style={{ background: '#fff', borderStyle: 'dashed', fontSize: 14, padding: 5, paddingLeft: 10, paddingRight: 10 }}>
+                    <Tag className="addtag" onClick={this.showInput} style={{ background: '#fff', borderStyle: 'dashed', fontSize: 14, padding: 5, paddingLeft: 10, paddingRight: 10 }}>
                       <Icon type="plus" /> Add Author
           </Tag>
                   )}
@@ -316,8 +388,8 @@ class Article extends React.Component {
                     <Input
                       ref={input => (this.city = input)}
                       type="text"
-                      size="small"
-                      style={{ width: 78 }}
+                      size="default"
+                      style={{ width: 120 }}
                       value={inputValue}
                       onChange={this.handleInputChange}
                       onBlur={this.handleCityConfirm}
@@ -325,8 +397,50 @@ class Article extends React.Component {
                     />
                   )}
                   {!inputVisible1 && (
-                    <Tag onClick={() => this.setState({ inputVisible1: true }, () => this.city.focus())} style={{ background: '#fff', borderStyle: 'dashed', fontSize: 14, padding: 5, paddingLeft: 10, paddingRight: 10 }}>
+                    <Tag className="addtag" onClick={() => this.setState({ inputVisible1: true }, () => this.city.focus())} style={{ background: '#fff', borderStyle: 'dashed', fontSize: 14, padding: 5, paddingLeft: 10, paddingRight: 10 }}>
                       <Icon type="plus" /> Add City
+          </Tag>
+                  )}
+                </div>
+              )}
+            </Form.Item>
+            <Form.Item label={categories.length ? "Categories" : "Add Categories"}>
+              {getFieldDecorator('categories', {
+                rules: [{ required: true, message: 'Please Add Category' }]
+              })(
+                <div>
+                  <div>
+                    <TweenOneGroup
+                      enter={{
+                        scale: 0.8,
+                        opacity: 0,
+                        type: 'from',
+                        duration: 100,
+                        onComplete: e => {
+                          e.target.style = '';
+                        },
+                      }}
+                      leave={{ opacity: 0, width: 0, scale: 0, duration: 200 }}
+                      appear={false}
+                    >
+                      {tagCategory}
+                    </TweenOneGroup>
+                  </div>
+                  {catVisible && (
+                    <Input
+                      ref={input => (this.cat = input)}
+                      type="text"
+                      size="default"
+                      style={{ width: 120 }}
+                      value={inputValue}
+                      onChange={this.handleInputChange}
+                      onBlur={this.handleCatConfirm}
+                      onPressEnter={this.handleCatConfirm}
+                    />
+                  )}
+                  {!catVisible && (
+                    <Tag className="addtag" onClick={() => this.setState({ catVisible: true }, () => this.cat.focus())} style={{ background: '#fff', borderStyle: 'dashed', fontSize: 14, padding: 5, paddingLeft: 10, paddingRight: 10 }}>
+                      <Icon type="plus" /> Add Category
           </Tag>
                   )}
                 </div>

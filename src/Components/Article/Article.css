@@ -314,6 +314,11 @@ td {
   width: 40%;
 }
 
+.addtag{
+  width: 130px;
+  text-align: center;
+}
+
 .articleForm{
   width: 80%;
 }
