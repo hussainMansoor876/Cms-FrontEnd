@@ -39,20 +39,25 @@ const tailFormItemLayout = {
 
 
 
+
 class Article extends React.Component {
 
 
   state = {
-    tags: [],
+    author: [],
+    cities: [],
     confirmDirty: false,
     autoCompleteResult: [],
-    user: null
+    user: null,
+    inputVisible: false,
+    inputVisible1: false,
+    inputValue: ''
   }
 
   handleClose = removedTag => {
-    const tags = this.state.tags.filter(tag => tag !== removedTag);
-    console.log(tags);
-    this.setState({ tags });
+    const author = this.state.author.filter(tag => tag !== removedTag);
+    console.log(author);
+    this.setState({ author });
   };
 
   showInput = () => {
@@ -65,16 +70,29 @@ class Article extends React.Component {
 
   handleInputConfirm = () => {
     const { inputValue } = this.state;
-    let { tags } = this.state;
-    if (inputValue && tags.indexOf(inputValue) === -1) {
-      tags = [...tags, inputValue];
+    let { author } = this.state;
+    if (inputValue && author.indexOf(inputValue) === -1) {
+      author = [...author, inputValue];
     }
-    console.log(tags);
+    console.log(author);
     this.setState({
-      tags,
+      author,
       inputVisible: false,
       inputValue: '',
       inputVisible: false,
+    });
+  };
+
+  handleCityConfirm = () => {
+    const { inputValue } = this.state;
+    let { cities } = this.state;
+    if (inputValue && cities.indexOf(inputValue) === -1) {
+      cities = [...cities, inputValue];
+    }
+    this.setState({
+      cities,
+      inputVisible1: false,
+      inputValue: '',
     });
   };
 
@@ -134,8 +152,9 @@ class Article extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { user, inputVisible, inputValue, tags } = this.state
-    const tagChild = tags.map(this.forMap);
+    const { user, inputVisible, inputValue, author, inputVisible1, cities } = this.state
+    const tagCity = cities.map(this.forMap)
+    const tagChild = author.map(this.forMap);
 
     return (
       <div>
@@ -229,12 +248,12 @@ class Article extends React.Component {
                 </Radio.Group>,
               )}
             </Form.Item>
-            <Form.Item label={tags.length ? "Author" : "Add Author"}>
+            <Form.Item label={author.length ? "Author" : "Add Author"}>
               {getFieldDecorator('author', {
                 rules: [{ required: true, message: 'Please Select True or False' }]
               })(
                 <div>
-                  <div style={{ marginBottom: 16 }}>
+                  <div>
                     <TweenOneGroup
                       enter={{
                         scale: 0.8,
@@ -258,14 +277,56 @@ class Article extends React.Component {
                       size="small"
                       style={{ width: 78 }}
                       value={inputValue}
-                      onChange={this.handleInputChange}
+                      onChange={(e) => this.setState({ inputValue: e.target.value })}
                       onBlur={this.handleInputConfirm}
                       onPressEnter={this.handleInputConfirm}
                     />
                   )}
                   {!inputVisible && (
-                    <Tag onClick={this.showInput} style={{ background: '#fff', borderStyle: 'dashed' }}>
+                    <Tag onClick={this.showInput} style={{ background: '#fff', borderStyle: 'dashed', fontSize: 14, padding: 5, paddingLeft: 10, paddingRight: 10 }}>
                       <Icon type="plus" /> Add Author
+          </Tag>
+                  )}
+                </div>
+              )}
+            </Form.Item>
+            <Form.Item label={cities.length ? "Cities" : "Add Cities"}>
+              {getFieldDecorator('city', {
+                rules: [{ required: true, message: 'Please Add City' }]
+              })(
+                <div>
+                  <div>
+                    <TweenOneGroup
+                      enter={{
+                        scale: 0.8,
+                        opacity: 0,
+                        type: 'from',
+                        duration: 100,
+                        onComplete: e => {
+                          e.target.style = '';
+                        },
+                      }}
+                      leave={{ opacity: 0, width: 0, scale: 0, duration: 200 }}
+                      appear={false}
+                    >
+                      {tagCity}
+                    </TweenOneGroup>
+                  </div>
+                  {inputVisible1 && (
+                    <Input
+                      ref={input => (this.city = input)}
+                      type="text"
+                      size="small"
+                      style={{ width: 78 }}
+                      value={inputValue}
+                      onChange={this.handleInputChange}
+                      onBlur={this.handleCityConfirm}
+                      onPressEnter={this.handleCityConfirm}
+                    />
+                  )}
+                  {!inputVisible1 && (
+                    <Tag onClick={() => this.setState({ inputVisible1: true }, () => this.city.focus())} style={{ background: '#fff', borderStyle: 'dashed', fontSize: 14, padding: 5, paddingLeft: 10, paddingRight: 10 }}>
+                      <Icon type="plus" /> Add City
           </Tag>
                   )}
                 </div>
