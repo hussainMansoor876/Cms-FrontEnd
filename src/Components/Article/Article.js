@@ -9,7 +9,7 @@ import { Menu, Icon, Input, Button, Select, Typography, Form, Checkbox } from 'a
 import { Link } from 'react-router-dom';
 
 const { Option } = Select;
-const { Search } = Input;
+const { Search, TextArea } = Input;
 const { Title } = Typography
 // const AutoCompleteOption = AutoComplete.Option;
 const formItemLayout = {
@@ -54,6 +54,15 @@ class Article extends React.Component {
     });
   };
 
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+      }
+    });
+  };
+
   componentWillMount() {
     const user = SessionStorageManager.getUser();
     if (user) {
@@ -70,18 +79,43 @@ class Article extends React.Component {
     console.log(`selected ${value}`);
   }
 
+  handleConfirmBlur = e => {
+    const { value } = e.target;
+    this.setState({ confirmDirty: this.state.confirmDirty || !!value });
+  };
+
+  compareToFirstPassword = (rule, value, callback) => {
+    const { form } = this.props;
+    if (value && value !== form.getFieldValue('password')) {
+      callback('Two passwords that you enter is inconsistent!');
+    } else {
+      callback();
+    }
+  };
+
+  validateToNextPassword = (rule, value, callback) => {
+    const { form } = this.props;
+    if (value && this.state.confirmDirty) {
+      form.validateFields(['confirm'], { force: true });
+    }
+    callback();
+  };
+
+  handleWebsiteChange = value => {
+    let autoCompleteResult;
+    if (!value) {
+      autoCompleteResult = [];
+    } else {
+      autoCompleteResult = ['.com', '.org', '.net'].map(domain => `${value}${domain}`);
+    }
+    this.setState({ autoCompleteResult });
+  };
+
 
   render() {
     const { getFieldDecorator } = this.props.form;
     const { user } = this.state
-    const prefixSelector = getFieldDecorator('prefix', {
-      initialValue: '86',
-    })(
-      <Select style={{ width: 70 }}>
-        <Option value="86">+86</Option>
-        <Option value="87">+87</Option>
-      </Select>,
-    );
+
     return (
       <div>
         <div style={{ display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
@@ -129,33 +163,47 @@ class Article extends React.Component {
         <Title style={{ paddingLeft: 20 }}>Add New Article</Title>
         <div className='articleForm'>
           <Form {...formItemLayout} onSubmit={this.handleSubmit}>
-            <Form.Item label="E-mail">
-              {getFieldDecorator('email', {
+          <Form.Item label="Headline">
+                {getFieldDecorator('headline', {
+                  rules: [{ required: true, message: 'Please input Article Headline' }],
+                })(
+                  <Input
+                    prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    placeholder="Article Headline"
+                    type="text"
+                  />,
+                )}
+              </Form.Item>
+              <Form.Item label="Sub-Headline">
+                {getFieldDecorator('subheadline', {
+                  rules: [{ required: true, message: 'Please input Article Sub-Headline' }],
+                })(
+                  <Input
+                    prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    type="text"
+                    placeholder="Article Sub-Headline"
+                  />,
+                )}
+              </Form.Item>
+            <Form.Item label="Article-Description">
+              {getFieldDecorator('text', {
                 rules: [
                   {
-                    type: 'email',
-                    message: 'The input is not valid E-mail!',
+                    required: true,
+                    message: 'Please input Article Headline',
                   },
+                ],
+              })(<TextArea rows={4} />)}
+            </Form.Item>
+            <Form.Item label="Headline">
+              {getFieldDecorator('a', {
+                rules: [
                   {
                     required: true,
-                    message: 'Please input your E-mail!',
+                    message: 'Please input Article Headline',
                   },
                 ],
               })(<Input />)}
-            </Form.Item>
-            <Form.Item label="Phone Number">
-              {getFieldDecorator('phone', {
-                rules: [{ required: true, message: 'Please input your phone number!' }],
-              })(<Input addonBefore={prefixSelector} style={{ width: '100%' }} />)}
-            </Form.Item>
-            <Form.Item {...tailFormItemLayout}>
-              {getFieldDecorator('agreement', {
-                valuePropName: 'checked',
-              })(
-                <Checkbox>
-                  I have read the <a href="">agreement</a>
-                </Checkbox>,
-              )}
             </Form.Item>
             <Form.Item {...tailFormItemLayout}>
               <Button type="primary" htmlType="submit">
