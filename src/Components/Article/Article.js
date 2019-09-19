@@ -7,8 +7,9 @@ import { loginUser } from '../../Redux/actions/authActions'
 import 'antd/dist/antd.css';
 import { TweenOneGroup } from 'rc-tween-one';
 import moment from 'moment';
-import { Menu, Icon, Input, Button, Select, Typography, Form, Radio, Tag, DatePicker, Modal, Upload } from 'antd';
+import { Menu, Icon, Input, Button, Select, Typography, Form, Radio, Tag, DatePicker, Modal, Upload, notification } from 'antd';
 import { Link } from 'react-router-dom';
+import ArticleImage from './ArticleImage'
 
 const { Option } = Select;
 const { Search, TextArea } = Input;
@@ -692,7 +693,7 @@ class Article extends React.Component {
                   <Button type="primary" onClick={this.showModal}>
                     Add Image
                 </Button>
-                  <CollectionCreateForm
+                  <ArticleImage
                     wrappedComponentRef={this.saveFormRef}
                     visible={this.state.visible}
                     onCancel={this.handleCancel}
@@ -734,50 +735,3 @@ const mapDispatchToProps = (dispatch) => {
 
 export default connect(mapStateToProps, mapDispatchToProps)(WrappedRegistrationForm)
 
-const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
-  class extends React.Component {
-
-    normFile = e => {
-      console.log('Upload event:', e);
-      if (Array.isArray(e)) {
-        return e;
-      }
-      return e && e.fileList;
-    };
-
-    render() {
-      const { visible, onCancel, onCreate, form } = this.props;
-      const { getFieldDecorator } = form;
-      return (
-        <Modal
-          visible={visible}
-          title="Add Image Details"
-          okText="Create"
-          onCancel={onCancel}
-          onOk={onCreate}
-        >
-          <Form layout="vertical">
-            <Form.Item label="Description">
-              {getFieldDecorator('description',{
-                rules: [{ required: true, message: 'Please Add the description of Image!' }]
-              })(<TextArea rows={3} />)}
-            </Form.Item>
-            <Form.Item >
-                {getFieldDecorator('image', {
-                  rules: [{ required: true, message: 'Please Upload the Image!' }],
-                  valuePropName: 'fileList',
-                  getValueFromEvent: this.normFile,
-                })(
-                  <Upload name="logo" listType="picture" accept="image/*">
-                    <Button>
-                      <Icon type="upload" /> Click to upload
-                    </Button>
-                  </Upload>,
-                )}
-              </Form.Item>
-          </Form>
-        </Modal>
-      );
-    }
-  },
-);

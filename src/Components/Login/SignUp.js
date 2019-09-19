@@ -11,7 +11,6 @@ import SessionStorageManager from '../../Config/SessionStorageManager';
 const title = "Error"
 const desc = 'Please Enter Correct UserName, Email and Password!'
 
-const message = "Please check your email for verification link"
 
 
 class Signup extends React.Component {
@@ -128,7 +127,7 @@ class Signup extends React.Component {
                   valuePropName: 'fileList',
                   getValueFromEvent: this.normFile,
                 })(
-                  <Upload name="logo" listType="picture">
+                  <Upload name="logo" accept="image/*">
                     <Button>
                       <Icon type="upload" /> Click to upload
                     </Button>
