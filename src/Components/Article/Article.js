@@ -399,27 +399,19 @@ class Article extends React.Component {
       <div>
         <div style={{ display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
           <div style={{ paddingTop: 10, paddingBottom: 10, height: 70, backgroundColor: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} className="right">
-            <Search
-              placeholder="Search by"
-              enterButton="Search"
-              size="large"
-              // style={{ paddingTop: 5 }}
-              className="search1"
-              style={{ paddingTop: 18, paddingBottom: 10, paddingLeft: 5, alignSelf: 'center' }}
-              onSearch={value => console.log(value)}
-            />
-            <Select defaultValue="City" size="large" className="selector" style={{ width: 120, marginLeft: 10, paddingTop: 8 }} onChange={(value) => this.handleChange(value)}>
-              <Option value="city">City</Option>
-              <Option value="categories">Category</Option>
-              <Option value="topics">Topic</Option>
-            </Select>
+            <h1 style={{ paddingLeft: 20, paddingTop: 10 }} className="title">Create New Article</h1>
           </div>
           <div style={{ height: 70, backgroundColor: 'white' }} className="left">
 
 
             <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal" style={{ display: "flex", justifyContent: 'space-between', alignItems: 'center', paddingTop: 10, paddingBottom: 10 }}>
+              <Menu.Item key="Dashboard">
+                <Link to="/dashboard">
+                  Home
+                </Link>
+              </Menu.Item>
               <Menu.Item key="article">
-                <Link to="/home">
+                <Link to="/article">
                   Add New Article
           </Link>
               </Menu.Item>
@@ -439,7 +431,6 @@ class Article extends React.Component {
           </div>
         </div>
         <br />
-        <Title style={{ paddingLeft: 20 }}>Add New Article</Title>
         <div className='articleForm'>
           <Form {...formItemLayout} onSubmit={this.handleSubmit}>
             <Form.Item label="Headline">

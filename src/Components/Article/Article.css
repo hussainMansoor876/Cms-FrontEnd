@@ -307,11 +307,11 @@ td {
 }
 
 .right{
-  width: 60%;
+  width: 40%;
 }
 
 .left{
-  width: 40%;
+  width: 60%;
 }
 
 .addtag{
@@ -347,6 +347,19 @@ td {
   
   .left{
     width: 20%;
+  }
+}
+
+
+@media(max-width: 450px){
+  .title{
+    font-size: 20px;
+  }
+}
+
+@media(max-width: 250px){
+  .title{
+    font-size: 16px;
   }
 }
 
