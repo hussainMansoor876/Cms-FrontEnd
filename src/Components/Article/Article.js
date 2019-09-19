@@ -6,13 +6,15 @@ import { connect } from 'react-redux';
 import { loginUser } from '../../Redux/actions/authActions'
 import 'antd/dist/antd.css';
 import { TweenOneGroup } from 'rc-tween-one';
-import { Menu, Icon, Input, Button, Select, Typography, Form, Radio, Tag } from 'antd';
+import moment from 'moment';
+import { Menu, Icon, Input, Button, Select, Typography, Form, Radio, Tag, DatePicker, TimePicker } from 'antd';
 import { Link } from 'react-router-dom';
 
 const { Option } = Select;
 const { Search, TextArea } = Input;
 const { Title } = Typography
-// const AutoCompleteOption = AutoComplete.Option;
+const { MonthPicker, RangePicker } = DatePicker;
+
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -37,6 +39,10 @@ const tailFormItemLayout = {
   },
 };
 
+const rangeConfig = {
+  rules: [{ type: 'array', required: true, message: 'Please select Publish and Depublish Date and Time!' }],
+};
+
 
 
 
@@ -57,42 +63,43 @@ class Article extends React.Component {
     user: null,
     inputVisible: false,
     inputVisible1: false,
-    inputValue: ''
+    inputValue: '',
+    publishedDate: moment().endOf('day')
   }
 
   handleClose = removedTag => {
     const author = this.state.author.filter(tag => tag !== removedTag);
-    this.setState({ 
+    this.setState({
       author,
-     });
+    });
   };
 
   handleClose1 = removedTag => {
     const cities = this.state.cities.filter(tag => tag !== removedTag);
-    this.setState({ 
+    this.setState({
       cities
-     });
+    });
   };
 
   handleClose2 = removedTag => {
     const categories = this.state.categories.filter(tag => tag !== removedTag);
-    this.setState({ 
+    this.setState({
       categories
-     });
+    });
   };
 
   handleClose3 = removedTag => {
     const topics = this.state.topics.filter(tag => tag !== removedTag);
-    this.setState({ 
+    this.setState({
       topics
-     });
+    });
   };
 
   handleClose4 = removedTag => {
     const gNews = this.state.gNews.filter(tag => tag !== removedTag);
-    this.setState({ 
+    this.setState({
       gNews
-     });
+    });
   };
 
   showInput = () => {
@@ -143,6 +150,15 @@ class Article extends React.Component {
       inputValue: '',
     });
   };
+
+  disabledDate(current) {
+    return current && current < moment().endOf('day');
+  }
+
+  disabledDate1(current) {
+    const { publishedDate } = this.state
+    return current && current < moment(publishedDate).endOf('day');
+  }
 
   handleTopicConfirm = () => {
     const { inputValue } = this.state;
@@ -284,6 +300,12 @@ class Article extends React.Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+        const rangeTimeValue = values['range-time-picker'];
+        values = {
+          ...values,
+          'depublishing': values['depublishing'].format('YYYY-MM-DD HH:mm:ss')
+        };
+        console.log('Received values of form: ', values);
       }
     });
   };
@@ -395,6 +417,27 @@ class Article extends React.Component {
                 type="text"
                 placeholder="Article Description"
                 rows={4} />)}
+            </Form.Item>
+            <Form.Item label="Publishing">
+              {getFieldDecorator('publishing', {
+                rules: [{ type: 'object', required: true, message: 'Please select Publish Date and Time!' }]
+              })(
+                <DatePicker
+                disabledDate={(date) => this.disabledDate(date)}
+                onChange={(value) => this.setState({ publishedDate: value._d })}
+                showTime
+                format="YYYY-MM-DD HH:mm:ss" />,
+              )}
+            </Form.Item>
+            <Form.Item label="Depublishing">
+              {getFieldDecorator('depublishing', {
+                rules: [{ type: 'object', required: true, message: 'Please select Depublish Date and Time!' }],
+              })(
+                <DatePicker
+                disabledDate={(date) => this.disabledDate1(date)}
+                showTime
+                format="YYYY-MM-DD HH:mm:ss" />
+              )}
             </Form.Item>
             <Form.Item label="Free">
               {getFieldDecorator('free', {
@@ -574,7 +617,7 @@ class Article extends React.Component {
                 </div>
               )}
             </Form.Item>
-            <Form.Item label={gNews.length ? "Google News Keywords" : "Google News Keywords"}>
+            <Form.Item label={gNews.length ? "Add Google News Keywords" : "Google News Keywords"}>
               {getFieldDecorator('gNews', {
                 rules: [{ required: true, message: 'Please Add Google News Keyword' }]
               })(
@@ -644,6 +687,8 @@ const mapDispatchToProps = (dispatch) => {
     loginUser: (isLoggedIn) => dispatch(loginUser(isLoggedIn)),
   }
 }
+
+
 
 
 
