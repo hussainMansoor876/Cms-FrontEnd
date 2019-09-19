@@ -4,7 +4,7 @@ import { Icon, Form, Modal, Upload, Input, Button } from 'antd';
 
 const { TextArea } = Input;
 
-class ArticleImage extends React.Component {
+class ArticleVideo extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -15,8 +15,8 @@ class ArticleImage extends React.Component {
     normFile = e => {
         const { openNotification } = this.props
         this.setState({ disableUpload: false })
-        if (e.file.type.indexOf('image')) {
-            openNotification('Error', 'Please Upload an Image!', 'close-circle', 'red')
+        if (e.file.type.indexOf('video')) {
+            openNotification('Error', 'Please Upload a Video!', 'close-circle', 'red')
             return
         }
         if (Array.isArray(e)) {
@@ -41,18 +41,16 @@ class ArticleImage extends React.Component {
                 onOk={onCreate}
             >
                 <Form layout="vertical">
-                    <Form.Item label="Description">
-                        {getFieldDecorator('image_desc', {
-                            rules: [{ required: true, message: 'Please Add the description of Image!' }]
-                        })(<TextArea rows={3} />)}
+                    <Form.Item label="Description (Optional)">
+                        {getFieldDecorator('video_desc')(<TextArea rows={3} />)}
                     </Form.Item>
                     <Form.Item >
-                        {getFieldDecorator('image', {
-                            rules: [{ required: true, message: 'Please Upload the Image!' }],
+                        {getFieldDecorator('video', {
+                            rules: [{ required: true, message: 'Please Upload a Video!' }],
                             valuePropName: 'fileList',
                             getValueFromEvent: this.normFile,
                         })(
-                            <Upload name="logo" listType="picture" accept="image/*">
+                            <Upload name="logo" listType="picture" accept="video/*">
                                 <Button disabled={disableUpload}>
                                     <Icon type="upload" /> Click to upload
                       </Button>
@@ -65,6 +63,6 @@ class ArticleImage extends React.Component {
     }
 }
 
-const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(ArticleImage)
+const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(ArticleVideo)
 
 export default CollectionCreateForm

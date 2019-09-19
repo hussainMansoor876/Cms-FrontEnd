@@ -10,6 +10,7 @@ import moment from 'moment';
 import { Menu, Icon, Input, Button, Select, Typography, Form, Radio, Tag, DatePicker, Modal, Upload, notification } from 'antd';
 import { Link } from 'react-router-dom';
 import ArticleImage from './ArticleImage'
+import ArticleVideo from './ArticleVideo'
 
 const { Option } = Select;
 const { Search, TextArea } = Input;
@@ -65,6 +66,7 @@ class Article extends React.Component {
     inputVisible1: false,
     inputValue: '',
     visible: false,
+    videoVisible: false,
     publishedDate: moment().endOf('day')
   }
 
@@ -72,8 +74,16 @@ class Article extends React.Component {
     this.setState({ visible: true });
   };
 
+  showModalVideo = () => {
+    this.setState({ videoVisible: true });
+  };
+
   handleCancel = () => {
     this.setState({ visible: false });
+  };
+
+  handleCancelVideo = () => {
+    this.setState({ videoVisible: false });
   };
 
   openNotification = (title, desc, icon, color = '#108ee9') => {
@@ -92,13 +102,28 @@ class Article extends React.Component {
       }
 
       console.log('Received values of form: ', values);
-      form.resetFields();
       this.setState({ visible: false });
+    });
+  };
+
+  handleCreateVideo = () => {
+    const { form } = this.formVideo.props;
+    form.validateFields((err, values) => {
+      if (err) {
+        return;
+      }
+
+      console.log('Received values of form: ', values);
+      this.setState({ videoVisible: false });
     });
   };
 
   saveFormRef = formRef => {
     this.formRef = formRef;
+  };
+
+  saveFormVideo = formVideo => {
+    this.formVideo = formVideo;
   };
 
   handleClose = removedTag => {
@@ -706,6 +731,22 @@ class Article extends React.Component {
                     visible={this.state.visible}
                     onCancel={this.handleCancel}
                     onCreate={this.handleCreate}
+                    openNotification={this.openNotification}
+                  />
+                </div>
+              )}
+            </Form.Item>
+            <Form.Item label="Add Video (Optional)">
+              {getFieldDecorator('Video')(
+                <div>
+                  <Button type="primary" onClick={this.showModalVideo}>
+                    Add Video
+                </Button>
+                  <ArticleVideo
+                    wrappedComponentRef={this.saveFormVideo}
+                    visible={this.state.videoVisible}
+                    onCancel={this.handleCancelVideo}
+                    onCreate={this.handleCreateVideo}
                     openNotification={this.openNotification}
                   />
                 </div>
