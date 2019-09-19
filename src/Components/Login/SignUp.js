@@ -4,6 +4,7 @@ import 'antd/dist/antd.css';
 import { Form, Icon, Input, Button, Upload, notification } from 'antd';
 import { Link } from 'react-router-dom'
 import axios from 'axios';
+import validator from 'validator'
 import { connect } from 'react-redux';
 import { loginUser } from '../../Redux/actions/authActions'
 import SessionStorageManager from '../../Config/SessionStorageManager';
@@ -59,6 +60,12 @@ class Signup extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        if (!validator.isEmail(values.email)) {
+          return this.openNotification("Email", "Invalid Email", 'close-circle', 'red')
+        }
+        else if (values.password.length < 6) {
+          return this.openNotification("Password", "Password must be Atleast 6 Digits", 'close-circle', 'red')
+        }
         this.setState({ disable: true })
         console.log('Received values of form: ', values);
         var formData = new FormData();

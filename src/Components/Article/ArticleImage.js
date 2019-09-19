@@ -1,18 +1,20 @@
 import React from 'react';
 import 'antd/dist/antd.css';
-import { Icon, Form, Modal, Upload, notification, Input, Button } from 'antd';
+import { Icon, Form, Modal, Upload, Input, Button } from 'antd';
 
 const { TextArea } = Input;
 
 class ArticleImage extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props)
+        this.state = {
+            disableUpload: false
+        }
     }
-
 
     normFile = e => {
         const { openNotification } = this.props
-        console.log('Upload event:', e.file.type.indexOf('image'));
+        this.setState({ disableUpload: false })
         if (e.file.type.indexOf('image')) {
             openNotification('Error', 'Please Upload an Image', 'close-circle', 'red')
             return
@@ -20,12 +22,16 @@ class ArticleImage extends React.Component {
         if (Array.isArray(e)) {
             return e;
         }
+        if (e.fileList.length) {
+            this.setState({ disableUpload: true })
+        }
         return e && e.fileList;
-    };
+    }
 
     render() {
         const { visible, onCancel, onCreate, form } = this.props;
         const { getFieldDecorator } = form;
+        const { disableUpload } = this.state
         return (
             <Modal
                 visible={visible}
@@ -47,7 +53,7 @@ class ArticleImage extends React.Component {
                             getValueFromEvent: this.normFile,
                         })(
                             <Upload name="logo" listType="picture" accept="image/*">
-                                <Button>
+                                <Button disabled={disableUpload}>
                                     <Icon type="upload" /> Click to upload
                       </Button>
                             </Upload>,
