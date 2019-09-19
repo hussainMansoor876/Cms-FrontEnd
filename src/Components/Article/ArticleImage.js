@@ -9,18 +9,12 @@ class ArticleImage extends React.Component {
         super(props)
     }
 
-    openNotification = (title, desc, icon, color = '#108ee9') => {
-        notification.open({
-            message: title,
-            description: desc,
-            icon: <Icon type={icon} style={{ color: color }} />,
-        });
-    };
 
     normFile = e => {
+        const { openNotification } = this.props
         console.log('Upload event:', e.file.type.indexOf('image'));
         if (e.file.type.indexOf('image')) {
-            this.openNotification('Error', 'Please Upload an Image', 'close-circle', 'red')
+            openNotification('Error', 'Please Upload an Image', 'close-circle', 'red')
             return
         }
         if (Array.isArray(e)) {

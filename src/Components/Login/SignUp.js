@@ -18,11 +18,12 @@ class Signup extends React.Component {
     super(props);
     this.state = {
       login: true,
-      disable: false
+      disable: false,
+      disableUpload: false
     }
   }
 
-  openNotification = (title, desc, icon, color='#108ee9') => {
+  openNotification = (title, desc, icon, color = '#108ee9') => {
     notification.open({
       message: title,
       description: desc,
@@ -31,17 +32,24 @@ class Signup extends React.Component {
   };
 
   normFile = e => {
-    console.log('Upload event:', e);
+    this.setState({ disableUpload: false })
+    if (e.file.type.indexOf('image')) {
+      this.openNotification(title, 'Please Upload an Image', 'close-circle', 'red')
+      return
+    }
     if (Array.isArray(e)) {
       return e;
     }
+    if (e.fileList.length) {
+      this.setState({ disableUpload: true })
+    }
     return e && e.fileList;
   }
-  
+
   componentDidMount() {
     const user = SessionStorageManager.getUser();
 
-    if(user){
+    if (user) {
       this.props.history.push('/dashboard')
     }
   }
@@ -61,21 +69,21 @@ class Signup extends React.Component {
         axios.post('https://cmsbackend123.herokuapp.com/login/signup', formData)
           .then((result) => {
             console.log(result)
-            if(result.data.success){
+            if (result.data.success) {
               this.openNotification('Wellcome', result.data.message, 'check')
               this.props.loginUser(true)
               SessionStorageManager.setUser(result.data)
               window.location.reload()
               this.props.history.push('/dashboard')
             }
-            else{
+            else {
               this.openNotification(title, result.message, 'close-circle', 'red')
               this.setState({ disable: false })
             }
           })
         // this.setState({ email: values.email, userName: values.user })
       }
-      else{
+      else {
         this.openNotification(title, desc, 'close-circle', 'red')
       }
     });
@@ -127,14 +135,14 @@ class Signup extends React.Component {
                   valuePropName: 'fileList',
                   getValueFromEvent: this.normFile,
                 })(
-                  <Upload name="logo" accept="image/*">
-                    <Button>
+                  <Upload name="logo" accept="image/*" disabled={this.state.disable}>
+                    <Button disabled={this.state.disableUpload}>
                       <Icon type="upload" /> Click to upload
                     </Button>
                   </Upload>,
                 )}
               </Form.Item>
-              
+
               <Form.Item className="sign-up">
                 <Button htmlType="submit" className="login-form-button" disabled={this.state.disable} style={{ backgroundColor: '#37A000', color: 'white', fontWeight: 'bold', fontSize: 14, height: 40 }}>
                   Sign Up
@@ -155,7 +163,7 @@ const SignupComp = Form.create({ name: 'normal_login' })(Signup);
 
 
 const mapStateToProps = (state) => {
-  console.log("mapToState",state.authReducer)
+  console.log("mapToState", state.authReducer)
   return {
     isLoggedIn: state.authReducer.isLoggedIn,
   }

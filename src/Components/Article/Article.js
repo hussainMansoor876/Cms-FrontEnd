@@ -76,6 +76,14 @@ class Article extends React.Component {
     this.setState({ visible: false });
   };
 
+  openNotification = (title, desc, icon, color = '#108ee9') => {
+    notification.open({
+      message: title,
+      description: desc,
+      icon: <Icon type={icon} style={{ color: color }} />,
+    });
+  };
+
   handleCreate = () => {
     const { form } = this.formRef.props;
     form.validateFields((err, values) => {
@@ -698,6 +706,7 @@ class Article extends React.Component {
                     visible={this.state.visible}
                     onCancel={this.handleCancel}
                     onCreate={this.handleCreate}
+                    openNotification={this.openNotification}
                   />
                 </div>
               )}
