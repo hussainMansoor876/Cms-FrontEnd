@@ -15,6 +15,7 @@ const columns = [
   {
     title: 'Headline',
     dataIndex: 'name',
+    render: text => <Link to="/hello">{text}</Link>
   },
   {
     title: 'Status',
