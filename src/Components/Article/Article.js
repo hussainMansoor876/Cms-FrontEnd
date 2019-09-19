@@ -7,13 +7,12 @@ import { loginUser } from '../../Redux/actions/authActions'
 import 'antd/dist/antd.css';
 import { TweenOneGroup } from 'rc-tween-one';
 import moment from 'moment';
-import { Menu, Icon, Input, Button, Select, Typography, Form, Radio, Tag, DatePicker, TimePicker } from 'antd';
+import { Menu, Icon, Input, Button, Select, Typography, Form, Radio, Tag, DatePicker, Modal, Upload } from 'antd';
 import { Link } from 'react-router-dom';
 
 const { Option } = Select;
 const { Search, TextArea } = Input;
 const { Title } = Typography
-const { MonthPicker, RangePicker } = DatePicker;
 
 const formItemLayout = {
   labelCol: {
@@ -64,8 +63,34 @@ class Article extends React.Component {
     inputVisible: false,
     inputVisible1: false,
     inputValue: '',
+    visible: false,
     publishedDate: moment().endOf('day')
   }
+
+  showModal = () => {
+    this.setState({ visible: true });
+  };
+
+  handleCancel = () => {
+    this.setState({ visible: false });
+  };
+
+  handleCreate = () => {
+    const { form } = this.formRef.props;
+    form.validateFields((err, values) => {
+      if (err) {
+        return;
+      }
+
+      console.log('Received values of form: ', values);
+      form.resetFields();
+      this.setState({ visible: false });
+    });
+  };
+
+  saveFormRef = formRef => {
+    this.formRef = formRef;
+  };
 
   handleClose = removedTag => {
     const author = this.state.author.filter(tag => tag !== removedTag);
@@ -423,10 +448,10 @@ class Article extends React.Component {
                 rules: [{ type: 'object', required: true, message: 'Please select Publish Date and Time!' }]
               })(
                 <DatePicker
-                disabledDate={(date) => this.disabledDate(date)}
-                onChange={(value) => this.setState({ publishedDate: value._d })}
-                showTime
-                format="YYYY-MM-DD HH:mm:ss" />,
+                  disabledDate={(date) => this.disabledDate(date)}
+                  onChange={(value) => this.setState({ publishedDate: value._d })}
+                  showTime
+                  format="YYYY-MM-DD HH:mm:ss" />,
               )}
             </Form.Item>
             <Form.Item label="Depublishing">
@@ -434,9 +459,9 @@ class Article extends React.Component {
                 rules: [{ type: 'object', required: true, message: 'Please select Depublish Date and Time!' }],
               })(
                 <DatePicker
-                disabledDate={(date) => this.disabledDate1(date)}
-                showTime
-                format="YYYY-MM-DD HH:mm:ss" />
+                  disabledDate={(date) => this.disabledDate1(date)}
+                  showTime
+                  format="YYYY-MM-DD HH:mm:ss" />
               )}
             </Form.Item>
             <Form.Item label="Free">
@@ -659,6 +684,23 @@ class Article extends React.Component {
                 </div>
               )}
             </Form.Item>
+            <Form.Item label="Add Image">
+              {getFieldDecorator('Image', {
+                rules: [{ required: true, message: 'Please Upload the Image and Add the Description' }],
+              })(
+                <div>
+                  <Button type="primary" onClick={this.showModal}>
+                    Add Image
+                </Button>
+                  <CollectionCreateForm
+                    wrappedComponentRef={this.saveFormRef}
+                    visible={this.state.visible}
+                    onCancel={this.handleCancel}
+                    onCreate={this.handleCreate}
+                  />
+                </div>
+              )}
+            </Form.Item>
             <Form.Item {...tailFormItemLayout}>
               <Button type="primary" htmlType="submit">
                 Register
@@ -690,6 +732,52 @@ const mapDispatchToProps = (dispatch) => {
 
 
 
-
-
 export default connect(mapStateToProps, mapDispatchToProps)(WrappedRegistrationForm)
+
+const CollectionCreateForm = Form.create({ name: 'form_in_modal' })(
+  class extends React.Component {
+
+    normFile = e => {
+      console.log('Upload event:', e);
+      if (Array.isArray(e)) {
+        return e;
+      }
+      return e && e.fileList;
+    };
+
+    render() {
+      const { visible, onCancel, onCreate, form } = this.props;
+      const { getFieldDecorator } = form;
+      return (
+        <Modal
+          visible={visible}
+          title="Add Image Details"
+          okText="Create"
+          onCancel={onCancel}
+          onOk={onCreate}
+        >
+          <Form layout="vertical">
+            <Form.Item label="Description">
+              {getFieldDecorator('description',{
+                rules: [{ required: true, message: 'Please Add the description of Image!' }]
+              })(<TextArea rows={3} />)}
+            </Form.Item>
+            <Form.Item >
+                {getFieldDecorator('image', {
+                  rules: [{ required: true, message: 'Please Upload the Image!' }],
+                  valuePropName: 'fileList',
+                  getValueFromEvent: this.normFile,
+                })(
+                  <Upload name="logo" listType="picture" accept="image/*">
+                    <Button>
+                      <Icon type="upload" /> Click to upload
+                    </Button>
+                  </Upload>,
+                )}
+              </Form.Item>
+          </Form>
+        </Modal>
+      );
+    }
+  },
+);

@@ -37,7 +37,7 @@ class Signup extends React.Component {
       return e;
     }
     return e && e.fileList;
-  };
+  }
   
   componentDidMount() {
     const user = SessionStorageManager.getUser();
