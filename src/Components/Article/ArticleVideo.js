@@ -16,7 +16,7 @@ class ArticleVideo extends React.Component {
         const { openNotification } = this.props
         this.setState({ disableUpload: false })
         if (e.file.type.indexOf('video')) {
-            openNotification('Error', 'Please Upload a Video!', 'close-circle', 'red')
+            openNotification('Error', 'Please Upload a Video', 'close-circle', 'red')
             return
         }
         if (Array.isArray(e)) {
@@ -41,8 +41,10 @@ class ArticleVideo extends React.Component {
                 onOk={onCreate}
             >
                 <Form layout="vertical">
-                    <Form.Item label="Description (Optional)">
-                        {getFieldDecorator('video_desc')(<TextArea rows={3} />)}
+                    <Form.Item label="Description">
+                        {getFieldDecorator('video_desc',{
+                            rules: [{ required: true, message: 'Please add the Description!' }]
+                        })(<TextArea rows={3} />)}
                     </Form.Item>
                     <Form.Item >
                         {getFieldDecorator('video', {
