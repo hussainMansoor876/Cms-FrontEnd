@@ -5,9 +5,8 @@ import SessionStorageManager from '../../Config/SessionStorageManager';
 import { connect } from 'react-redux';
 import { loginUser } from '../../Redux/actions/authActions'
 import 'antd/dist/antd.css';
-import { Menu, Icon, Input, Button, Select, Table, Skeleton } from 'antd';
+import { Menu, Icon, Input, Button, Select, Table } from 'antd';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 
 const { Option } = Select;
 const { Search } = Input;
@@ -15,20 +14,16 @@ const { Search } = Input;
 const columns = [
   {
     title: 'Headline',
-    dataIndex: 'headline',
-    render: text => <Link to="/hello">{text.headline.length > 30 ? text.headline.slice(0, 30) : text.headline}</Link>
+    dataIndex: 'name',
+    render: text => <Link to="/hello">{text}</Link>
   },
   {
     title: 'Status',
-    dataIndex: 'status',
+    dataIndex: 'age',
   },
   {
     title: 'Author',
-    dataIndex: 'author',
-  },
-  {
-    title: 'Date',
-    dataIndex: 'date',
+    dataIndex: 'address',
   },
 ];
 
@@ -42,13 +37,11 @@ for (let i = 0; i < 460; i++) {
   });
 }
 
-class Dashboard extends React.Component {
-
+class Gallery extends React.Component {
 
   state = {
     current: 'mail',
-    user: null,
-    allData: []
+    user: null
   }
 
   handleClick = e => {
@@ -58,25 +51,7 @@ class Dashboard extends React.Component {
     });
   };
 
-  async componentWillMount() {
-    const { allData } = this.state
-    await axios.get('https://cmsbackend123.herokuapp.com/get/article/getAll')
-      .then((res) => {
-        console.log(res.data.data)
-        const { data } = res.data
-        data.map((v, i) => {
-          return allData.push({
-            key: i,
-            headline: v,
-            status: v.status,
-            author: v.author,
-            date: v.timestamp
-          })
-        })
-        this.setState({ allData })
-        console.log(allData)
-      })
-      .catch((err) => console.log(err))
+  componentWillMount() {
     const user = SessionStorageManager.getUser();
     if (user) {
       this.setState({ user })
@@ -136,7 +111,7 @@ class Dashboard extends React.Component {
         },
       ],
     };
-    const { user, allData } = this.state
+    const { user } = this.state
     return (
       <div>
         <div style={{ display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
@@ -182,13 +157,14 @@ class Dashboard extends React.Component {
         </div>
         <br />
         <h1 style={{ justifyContent: 'center', textAlign: 'center' }}>News Articles</h1>
-        <br />
+        <br/>
         <div style={{ width: '100%', justifyContent: 'center', display: 'flex', textAlign: 'center' }}>
-          {allData.length ? <Table
-            style={{ width: '94%' }}
-            columns={columns}
-            dataSource={allData}
-          /> : <Skeleton active />}
+        <Table 
+        // rowSelection={rowSelection} 
+        style={{ width: '94%' }}
+        columns={columns} 
+        dataSource={data} 
+        />
         </div>
       </div>
     )
