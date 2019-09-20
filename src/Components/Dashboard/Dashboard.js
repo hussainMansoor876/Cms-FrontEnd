@@ -16,8 +16,7 @@ const columns = [
   {
     title: 'Headline',
     dataIndex: 'headline',
-    onClick: () => console.log("hello"),
-    // render: text => <Link to={`article/${text.slug}`}>{text.headline.length > 30 ? text.headline.slice(0, 30) : text.headline}</Link>
+    render: text => <Link to={`article/${text.slug}`} onClick={() => sessionStorage.setItem("article",text)}>{text.headline.length > 30 ? text.headline.slice(0, 30) : text.headline}</Link>
   },
   {
     title: 'Status',
@@ -68,7 +67,7 @@ class Dashboard extends React.Component {
         data.map((v, i) => {
           return allData.push({
             key: i,
-            headline: v.status,
+            headline: v,
             status: v.status,
             author: v.author,
             date: v.timestamp
