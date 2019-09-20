@@ -370,6 +370,7 @@ class ViewArticle extends React.Component {
   };
 
   componentWillMount() {
+    console.log(this.props.match.params)
     const user = SessionStorageManager.getUser();
     if (user) {
       this.setState({ user })
@@ -755,7 +756,7 @@ class ViewArticle extends React.Component {
   }
 }
 
-const WrappedRegistrationForm = Form.create({ name: 'register' })(Article);
+const WrappedRegistrationForm = Form.create({ name: 'register' })(ViewArticle);
 
 
 

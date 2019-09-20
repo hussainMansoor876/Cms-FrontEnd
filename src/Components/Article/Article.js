@@ -7,12 +7,12 @@ import { loginUser } from '../../Redux/actions/authActions'
 import 'antd/dist/antd.css';
 import { TweenOneGroup } from 'rc-tween-one';
 import moment from 'moment';
-import { Menu, Icon, Input, Button, Select, Typography, Form, Radio, Tag, DatePicker, Modal, Upload, notification } from 'antd';
+import { Menu, Icon, Input, Button, Select, Typography, Form, Radio, Tag, DatePicker } from 'antd';
 import { Link } from 'react-router-dom';
 import ArticleImage from './ArticleImage'
 import ArticleVideo from './ArticleVideo'
 
-const { Option } = Select;
+const { Option, OptGroup } = Select;
 const { Search, TextArea } = Input;
 const { Title } = Typography
 
@@ -489,6 +489,17 @@ class Article extends React.Component {
                   format="YYYY-MM-DD HH:mm:ss" />
               )}
             </Form.Item>
+            {/* <Form.Item label="Status">
+              {getFieldDecorator('status', {
+                rules: [{ required: true, message: 'Please select Status!' }],
+              })(
+                <Select style={{ width: 200 }} >
+                    <Option value="Published">Published</Option>
+                    <Option value="Draft">Draft</Option>
+                    <Option value="Deleted">Deleted</Option>
+                </Select>
+              )}
+            </Form.Item> */}
             <Form.Item label="Free">
               {getFieldDecorator('free', {
                 rules: [{ required: true, message: 'Please Select True or False' }]
