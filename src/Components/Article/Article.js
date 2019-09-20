@@ -11,6 +11,7 @@ import { Menu, Icon, Input, Button, Select, Typography, Form, Radio, Tag, DatePi
 import { Link } from 'react-router-dom';
 import ArticleImage from './ArticleImage'
 import ArticleVideo from './ArticleVideo'
+import axios from 'axios'
 
 const { Option, OptGroup } = Select;
 const { Search, TextArea } = Input;
@@ -67,7 +68,9 @@ class Article extends React.Component {
     inputValue: '',
     visible: false,
     videoVisible: false,
-    publishedDate: moment().endOf('day')
+    publishedDate: moment().endOf('day'),
+    imageData: '',
+    videoData: null
   }
 
   showModal = () => {
@@ -100,9 +103,15 @@ class Article extends React.Component {
       if (err) {
         return;
       }
-
-      console.log('Received values of form: ', values);
-      this.setState({ visible: false });
+      axios.post('http://127.0.0.1:5000/article/add', values)
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      console.log('Received values of form Image: ', values);
+      this.setState({ visible: false, imageData: values });
     });
   };
 
@@ -113,8 +122,8 @@ class Article extends React.Component {
         return;
       }
 
-      console.log('Received values of form: ', values);
-      this.setState({ videoVisible: false });
+      console.log('Received values of form Video: ', values);
+      this.setState({ videoVisible: false, videoData: values });
     });
   };
 
@@ -355,16 +364,33 @@ class Article extends React.Component {
   };
 
   handleSubmit = e => {
+    const { imageData, videoData } = this.state
+    const user = SessionStorageManager.getUser();
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
-        const rangeTimeValue = values['range-time-picker'];
         values = {
           ...values,
-          'depublishing': values['depublishing'].format('YYYY-MM-DD HH:mm:ss')
+          'publishing': values['publishing']._d,
+          'depublishing': values['depublishing']._d
         };
         console.log('Received values of form: ', values);
+        var sendData = new FormData();
+        sendData.push('headline',values['headline'])
+        sendData.push('subheadline',values['subheadline'])
+        sendData.push('text',values['text'])
+        sendData.push('author',values['author'])
+        sendData.push('city',values['city'])
+        sendData.push('categories',values['categories'])
+        sendData.push('topics',values['topics'])
+        sendData.push('gNews',values['gNews'])
+        sendData.push('free',values['free'])
+        sendData.push('publishing',values['publishing'])
+        sendData.push('depublishing',values['depublishing'])
+        sendData.push('userName',user.name)
+        // sendData.push('uid',user.uid)
+
+        // console.log(sendData)
       }
     });
   };
@@ -438,7 +464,6 @@ class Article extends React.Component {
                 rules: [{ required: true, message: 'Please input Article Headline' }],
               })(
                 <Input
-                  prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
                   placeholder="Article Headline"
                   type="text"
                 />,
@@ -449,7 +474,6 @@ class Article extends React.Component {
                 rules: [{ required: true, message: 'Please input Article Sub-Headline' }],
               })(
                 <Input
-                  prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                   type="text"
                   placeholder="Article Sub-Headline"
                 />,
