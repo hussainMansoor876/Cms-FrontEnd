@@ -357,25 +357,26 @@ class Article extends React.Component {
 
   handleSubmit = e => {
     const { imageData, videoData, categories, author, gNews, cities, topics } = this.state
+    console.log(this.state)
     const user = SessionStorageManager.getUser();
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         values = {
           ...values,
-          'publishing': values['publishing']._d,
-          'depublishing': values['depublishing']._d
+          'publishing': values['publishing'].format('YYYY-MM-DD HH:mm:ss'),
+          'depublishing': values['depublishing'].format('YYYY-MM-DD HH:mm:ss')
         };
         console.log('Received values of form: ', values);
         var formData = new FormData();
         formData.append('headline', values['headline'])
         formData.append('subheadline', values['subheadline'])
         formData.append('text', values['text'])
-        formData.append('author', author)
-        formData.append('city', cities)
-        formData.append('categories', categories)
-        formData.append('topics', topics)
-        formData.append('gNews', gNews)
+        formData.append('author', JSON.stringify(author))
+        formData.append('city', JSON.stringify(cities))
+        formData.append('categories', JSON.stringify(categories))
+        formData.append('topics', JSON.stringify(topics))
+        formData.append('gNews', JSON.stringify(gNews))
         formData.append('free', values['free'])
         formData.append('publishing', values['publishing'])
         formData.append('depublishing', values['depublishing'])
