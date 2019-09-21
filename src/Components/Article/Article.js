@@ -7,7 +7,7 @@ import { loginUser } from '../../Redux/actions/authActions'
 import 'antd/dist/antd.css';
 import { TweenOneGroup } from 'rc-tween-one';
 import moment from 'moment';
-import { Menu, Icon, Input, Button, Select, Typography, Form, Radio, Tag, DatePicker } from 'antd';
+import { Menu, Icon, Input, Button, Select, Typography, Form, Radio, Tag, DatePicker, notification } from 'antd';
 import { Link } from 'react-router-dom';
 import ArticleImage from './ArticleImage'
 import ArticleVideo from './ArticleVideo'
@@ -52,6 +52,7 @@ class Article extends React.Component {
 
 
   state = {
+    formDisable: false,
     author: [],
     cities: [],
     categories: [],
@@ -367,7 +368,7 @@ class Article extends React.Component {
           'publishing': values['publishing'].format('YYYY-MM-DD HH:mm:ss'),
           'depublishing': values['depublishing'].format('YYYY-MM-DD HH:mm:ss')
         };
-        console.log('Received values of form: ', values);
+        this.setState({ formDisable: true })
         var formData = new FormData();
         formData.append('headline', values['headline'])
         formData.append('subheadline', values['subheadline'])
@@ -386,7 +387,12 @@ class Article extends React.Component {
         formData.append('image_desc', imageData.image_desc)
         videoData && formData.append('video',videoData.video[0].originFileObj)
         videoData && formData.append('video_desc', videoData.video_desc)
-
+        setTimeout(() => {
+          this.openNotification('Successfully', "Added News Article", 'check')
+        }, 2000)
+        setTimeout(() => {
+          window.location.reload()
+        }, 4000)
         axios.post('http://127.0.0.1:5000/article/add', formData)
           .then((res) => {
             console.log(res)
@@ -394,9 +400,6 @@ class Article extends React.Component {
           .catch((err) => {
             console.log(err)
           })
-        // sendData.push('uid',user.uid)
-
-        // console.log(sendData)
       }
     });
   };
@@ -519,17 +522,6 @@ class Article extends React.Component {
                   format="YYYY-MM-DD HH:mm:ss" />
               )}
             </Form.Item>
-            {/* <Form.Item label="Status">
-              {getFieldDecorator('status', {
-                rules: [{ required: true, message: 'Please select Status!' }],
-              })(
-                <Select style={{ width: 200 }} >
-                    <Option value="Published">Published</Option>
-                    <Option value="Draft">Draft</Option>
-                    <Option value="Deleted">Deleted</Option>
-                </Select>
-              )}
-            </Form.Item> */}
             <Form.Item label="Free">
               {getFieldDecorator('free', {
                 rules: [{ required: true, message: 'Please Select True or False' }]
@@ -785,8 +777,8 @@ class Article extends React.Component {
               )}
             </Form.Item>
             <Form.Item {...tailFormItemLayout}>
-              <Button type="primary" htmlType="submit">
-                Register
+              <Button type="primary" htmlType="submit" disable={this.state.formDisable} loading={this.state.formDisable}>
+                Add Article
           </Button>
             </Form.Item>
           </Form>
