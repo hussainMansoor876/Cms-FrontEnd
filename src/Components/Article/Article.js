@@ -103,14 +103,6 @@ class Article extends React.Component {
       if (err) {
         return;
       }
-      axios.post('http://127.0.0.1:5000/article/add', values)
-        .then((res) => {
-          console.log(res)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-      console.log('Received values of form Image: ', values);
       this.setState({ visible: false, imageData: values });
     });
   };
@@ -364,7 +356,7 @@ class Article extends React.Component {
   };
 
   handleSubmit = e => {
-    const { imageData, videoData } = this.state
+    const { imageData, videoData, categories, author, gNews, cities, topics } = this.state
     const user = SessionStorageManager.getUser();
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
@@ -375,19 +367,26 @@ class Article extends React.Component {
           'depublishing': values['depublishing']._d
         };
         console.log('Received values of form: ', values);
-        var sendData = new FormData();
-        sendData.push('headline',values['headline'])
-        sendData.push('subheadline',values['subheadline'])
-        sendData.push('text',values['text'])
-        sendData.push('author',values['author'])
-        sendData.push('city',values['city'])
-        sendData.push('categories',values['categories'])
-        sendData.push('topics',values['topics'])
-        sendData.push('gNews',values['gNews'])
-        sendData.push('free',values['free'])
-        sendData.push('publishing',values['publishing'])
-        sendData.push('depublishing',values['depublishing'])
-        sendData.push('userName',user.name)
+        var formData = new FormData();
+        formData.append('headline', values['headline'])
+        formData.append('subheadline', values['subheadline'])
+        formData.append('text', values['text'])
+        formData.append('author', author)
+        formData.append('city', cities)
+        formData.append('categories', categories)
+        formData.append('topics', topics)
+        formData.append('gNews', gNews)
+        formData.append('free', values['free'])
+        formData.append('publishing', values['publishing'])
+        formData.append('depublishing', values['depublishing'])
+        formData.append('userName', user.name)
+        axios.post('http://127.0.0.1:5000/article/add', formData)
+          .then((res) => {
+            console.log(res)
+          })
+          .catch((err) => {
+            console.log(err)
+          })
         // sendData.push('uid',user.uid)
 
         // console.log(sendData)
