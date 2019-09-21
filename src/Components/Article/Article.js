@@ -381,6 +381,12 @@ class Article extends React.Component {
         formData.append('publishing', values['publishing'])
         formData.append('depublishing', values['depublishing'])
         formData.append('userName', user.name)
+        formData.append('uid',user.uid)
+        formData.append('image',imageData.image[0].originFileObj)
+        formData.append('image_desc', imageData.image_desc)
+        formData.append('video',videoData.video[0].originFileObj)
+        formData.append('video_desc', videoData.video_desc)
+
         axios.post('http://127.0.0.1:5000/article/add', formData)
           .then((res) => {
             console.log(res)
