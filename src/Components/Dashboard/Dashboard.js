@@ -106,7 +106,7 @@ class Dashboard extends React.Component {
     var { filter, allData } = this.state
     allData = []
     // this.setState({ allData: [] })
-    axios.get(`http://127.0.0.1:5000/get/article/${filter}/${value}`)
+    axios.get(`https://cmsbackend123.herokuapp.com/get/article/${filter}/${value}`)
       .then((res) => {
         console.log(res)
         const { data } = res.data

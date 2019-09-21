@@ -392,8 +392,8 @@ class Article extends React.Component {
         }, 2000)
         setTimeout(() => {
           window.location.reload()
-        }, 4000)
-        axios.post('http://127.0.0.1:5000/article/add', formData)
+        }, 3000)
+        axios.post('https://cmsbackend123.herokuapp.com/article/add', formData)
           .then((res) => {
             console.log(res)
           })
