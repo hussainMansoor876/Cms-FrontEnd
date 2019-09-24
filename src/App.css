@@ -1,9 +1,0 @@
-.flexer {
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-}
-
-.test-border { 
-  border: solid 1px red !important
-}
